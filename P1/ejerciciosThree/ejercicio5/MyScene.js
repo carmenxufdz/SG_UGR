@@ -7,13 +7,9 @@ import { TrackballControls } from '../libs/TrackballControls.js'
 import { Stats } from '../libs/stats.module.js'
 
 // Clases de mi proyecto
-import { Diamond } from './Diamond.js'
-import { Heart } from './Heart.js'
-import { Spade } from './Spade.js'
-import { Clover } from './Clover.js'
-
-import { CloverColumn } from './CloverColumn.js'
-import { HeartColumn } from './HeartColumn.js'
+import { Taza } from './Taza.js'
+import { Tuerca } from './Tuerca.js'
+import { Pieza } from './Pieza.js'
 
 /**
  * La clase fachada del modelo
@@ -30,45 +26,24 @@ class MyScene extends THREE.Scene {
 
     // Construimos los distinos elementos que tendremos en la escena
     this.gui = this.createGUI ();
-    this.initStats();
-    this.createLights ();
+    //this.initStats();
+    //this.createLights ();
     this.createCamera ();
     //this.createGround ();
-    //this.createAxis();    
     
     // Por último creamos los modelos
-    const diamante = new Diamond();
-    diamante.scale.set (1.5, 1.5, 1);
-    diamante.position.set (-5, 5, 0);
+    const taza = new Taza();
+    taza.position.set(-5,0,0);
+    
+    const tuerca = new Tuerca();
 
-    const corazon = new Heart();
-    corazon.scale.set (1, 1, 1);
-    corazon.position.set (5, -5, 0);
+    const pieza = new Pieza();
+    pieza.position.set(5,0,0);
 
-    const trebol = new Clover();
-    trebol.position.set (-5, -5, 0);
-
-    const pica = new Spade();
-    pica.scale.set (1.6, 1.6, 1);
-    pica.position.set (5, 5, 0);
-
-    const columnaT = new CloverColumn();
-    columnaT.position.set(-15,0,0);
-
-    const columnaH = new HeartColumn();
-    columnaH.position.set(15,0,0);
-
-    this.modelos = [diamante, corazon, trebol, pica, columnaT, columnaH];
+    this.modelos = [taza, tuerca,pieza];
     for (let i = 0; i < this.modelos.length; i++) {
       this.add(this.modelos[i]);
     }
-    this.animacion=true;
-  }
-
-  createAxis(){
-    // Ejes centrales, aunque luego cada objeto tendrá los suyos propios
-    let axis_c = new THREE.AxesHelper (5);
-    this.add(axis_c);
   }
 
   initStats() {
@@ -134,23 +109,23 @@ class MyScene extends THREE.Scene {
     // Se crea la interfaz gráfica de usuario, aunque no tiene opciones propias, solo se sumaran las de los objetos
     var gui = new GUI();
     this.guiControls ={
-      lightIntensity : 0.5,
-      animacion : true,
+      animacion : false,
+      alambre : false,
     }
 
     var folder = gui.addFolder("Luz y Ejes")
-    // Se le añade un control para la intensidad de la luz
-    folder.add (this.guiControls, 'lightIntensity', 0, 1, 0.1)
-    .name('Intensidad de la Luz : ')
-    .onChange ( (value) => this.setLightIntensity (value) );
-
     folder.add (this.guiControls, 'animacion')
       .name ('Animacion: ')
-      .onChange ( (value) => this.animacion=value );
+      .onChange ( (value) => this.setAnimacion (value) );
+    folder.add (this.guiControls, 'alambre')
+      .name ('Alambre: ');
+      //.onChange ( (value) => this.setAlambre (value) );
     return gui;
   }
-  setSombreadoPlano (valor) {
-    this.modelos[0].setSombreadoPlano(valor);
+  setAnimacion (valor) {
+    for (let i = 0; i < this.modelos.length; i++) {
+      this.modelos[i].setAnimacion(valor);
+    }
   }
   createLights () {
     // Se crea una luz ambiental, evita que se vean complentamente negras las zonas donde no incide de manera directa una fuente de luz
@@ -186,12 +161,7 @@ class MyScene extends THREE.Scene {
     
     return renderer;  
   }
-
-  setLightIntensity (valor) 
-  {
-      this.spotLight.intensity = valor;
-  }
-    
+  
   getCamera () {
     // En principio se devuelve la única cámara que tenemos
     // Si hubiera varias cámaras, este método decidiría qué cámara devuelve cada vez que es consultado
@@ -231,10 +201,6 @@ class MyScene extends THREE.Scene {
     
     // Le decimos al renderizador "visualiza la escena que te indico usando la cámara que te estoy pasando"
     this.renderer.render (this, this.getCamera());
-
-    if(this.animacion){
-      
-    }
 
     // Este método debe ser llamado cada vez que queramos visualizar la escena de nuevo.
     // Literalmente le decimos al navegador: "La próxima vez que haya que refrescar la pantalla, llama al método que te indico".

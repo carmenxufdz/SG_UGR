@@ -9,6 +9,7 @@ import { Stats } from '../libs/stats.module.js'
 // Clases de mi proyecto
 
 import { MyFigure } from './MyFigure.js'
+import { Pawn } from './Pawn.js'
 
 
  
