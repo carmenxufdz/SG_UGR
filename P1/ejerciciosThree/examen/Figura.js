@@ -46,8 +46,8 @@ class Figura extends THREE.Object3D {
         
         const cylinderLat2Mesh = cylinderLatMesh.clone();
 
-        cylinderLatMesh.position.set(-4.5,0,0);
-        cylinderLat2Mesh.position.set(4.5,0,0);
+        cylinderLatMesh.position.set(-4,0,0);
+        cylinderLat2Mesh.position.set(4,0,0);
 
         const huecos = new THREE.CylinderGeometry(0.5,0.5,5,30);
         const huecosMesh = new THREE.Mesh(huecos, material);
@@ -101,9 +101,12 @@ class Figura extends THREE.Object3D {
         figura.position.set(0,1.5,0);
 
 
+        const corte = new THREE.BoxGeometry(12,1,12);
+        const corteMesh = new THREE.Mesh(corte, material);
+        corteMesh.position.set(0,-0.5,0);
         var csg = new CSG();
         csg.union([baseMesh, figura]);
-        csg.subtract([capsulaMesh]);
+        csg.subtract([capsulaMesh, corteMesh]);
         csg.subtract([huecos2Mesh,huecosMesh, cylinderLatMesh, cylinderLat2Mesh]);
 
 
