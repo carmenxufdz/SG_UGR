@@ -8,7 +8,7 @@ import { TrackballControls } from '../../libs/TrackballControls.js'
 
 // Clases de mi proyecto
 
-import { Rayo } from './Rayo.js'
+import { GoodPotion } from './GoodPotion.js'
 
 
 class MyScene extends THREE.Scene {
@@ -46,10 +46,10 @@ class MyScene extends THREE.Scene {
     // la gui y el texto bajo el que se agruparán los controles de la interfaz que añada el modelo.
     //var jarra = new Jarra (this.gui, "Controles de la Jarra");
     //var tuerca = new Tuerca (this.gui, "Controles de la Tuerca");
-    this.rayo = new Rayo (this.gui, "Controles de la Figura");
+    this.goodPotion = new GoodPotion (this.gui, "Controles de la Figura");
     //this.add (jarra);
     //this.add (tuerca);
-    this.add (this.rayo);
+    this.add (this.goodPotion);
   }
   
   createCamera () {
