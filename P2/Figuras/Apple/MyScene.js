@@ -5,10 +5,11 @@
 import * as THREE from '../../libs/three.module.js'
 import { GUI } from '../../libs/dat.gui.module.js'
 import { TrackballControls } from '../../libs/TrackballControls.js'
+import { Stats } from '../../libs/stats.module.js'
 
 // Clases de mi proyecto
 
-import { Rayo } from './Rayo.js'
+import { Apple } from './Apple.js'
 
 
 class MyScene extends THREE.Scene {
@@ -46,10 +47,10 @@ class MyScene extends THREE.Scene {
     // la gui y el texto bajo el que se agruparán los controles de la interfaz que añada el modelo.
     //var jarra = new Jarra (this.gui, "Controles de la Jarra");
     //var tuerca = new Tuerca (this.gui, "Controles de la Tuerca");
-    this.rayo = new Rayo (this.gui, "Controles de la Figura");
+    this.apple = new Apple (this.gui, "Controles de la Figura");
     //this.add (jarra);
     //this.add (tuerca);
-    this.add (this.rayo);
+    this.add (this.apple);
   }
   
   createCamera () {
@@ -211,7 +212,7 @@ class MyScene extends THREE.Scene {
     // Se actualiza la posición de la cámara según su controlador
     this.cameraControl.update();
 
-    this.rayo.update();
+    this.apple.update();
     
     // Este método debe ser llamado cada vez que queramos visualizar la escena de nuevo.
     // Literalmente le decimos al navegador: "La próxima vez que haya que refrescar la pantalla, llama al método que te indico".
