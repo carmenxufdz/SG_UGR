@@ -32,12 +32,14 @@ class Apple extends THREE.Object3D {
         //creamos la geometria
         var GeometryRabo = new THREE.ExtrudeGeometry(shape,options);
         var GeometryManzana = new THREE.LatheGeometry(manzana,10);
-        var GeometryMordida = new THREE.SphereGeometry(1,10,10);
-        var GeometryMordida2 = new THREE.SphereGeometry(2,10,10);
+        var GeometryMordida = new THREE.SphereGeometry(1.1,10,10);
+        var GeometryMordida2 = new THREE.SphereGeometry(1,10,10);
         
         GeometryRabo.translate(0,3.5,0)
-        GeometryMordida.translate(2,3,0)
-        GeometryMordida2.translate(3.4,3.8,0)
+        //GeometryMordida.rotateZ(-45*Math.PI/180)
+        //GeometryMordida2.rotateZ(-45*Math.PI/180)
+        GeometryMordida.translate(1.55,2.55,0)
+        GeometryMordida2.translate(2.25,2.7,0)
 
         //creamos los MESH
         var meshRabo = new THREE.Mesh(GeometryRabo, raboMat);
@@ -50,7 +52,7 @@ class Apple extends THREE.Object3D {
         //csg.union([meshManzana, meshRabo,meshMordida])
         //csg.subtract([meshManzana,meshMordida2])
         //csg.subtract([meshMordida, meshMordida2])
-        csg.subtract([meshManzana, meshMordida])
+        csg.subtract([meshManzana, meshMordida2])
 
         var resultadoMesh = new THREE.Mesh()
 
