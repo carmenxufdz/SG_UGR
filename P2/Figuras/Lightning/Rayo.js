@@ -18,7 +18,7 @@ class Rayo extends THREE.Object3D {
         };
 
         var geometry = new THREE.ExtrudeGeometry(shape, this.settings);
-        var material = new THREE.MeshPhysicalMaterial( { color: 0xffff00 } ); // amarillo
+        var material = new THREE.MeshStandardMaterial( { color: 0xffff00, metalness: 1, roughness: 0.5 } ); // amarillo
 
         this.rayo = new THREE.Mesh(geometry, material);
 

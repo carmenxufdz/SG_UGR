@@ -1,5 +1,6 @@
 import * as THREE from '../../libs/three.module.js'
 
+
 class Mushroom extends THREE.Object3D {
     constructor(gui, titleGui)
     {
@@ -83,7 +84,6 @@ class Mushroom extends THREE.Object3D {
         sombreroBueno.push (new THREE.Vector3 (1.25, 2.3, 0));
         sombreroBueno.push (new THREE.Vector3 (0, 2.5, 0));
     }
-
     update()
     {
     }

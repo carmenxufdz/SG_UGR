@@ -22,14 +22,19 @@ class Skull extends THREE.Object3D {
 
         this.settings_ojos = {
             steps: 10, // — int. Number of points used for subdividing segments along the depth of the extruded spline
-            depth: 1, // — float. Depth to extrude the shape
+            depth: 5, // — float. Depth to extrude the shape
             bevelEnabled: true,
             extrudePath: trayectoria_barrido
         };
 
+        this.settings_nariz = {
+            depth: 1, 
+            bevelEnabled: true, 
+        }
+
         var geometry = new THREE.ExtrudeGeometry(shape, this.settings);
         var material = new THREE.MeshNormalMaterial( { color: 0xFFF8E4 } ); // amarillo
-
+        //var material = new THREE.MeshPhongMaterial({color: 0xffffff});
         const extrude = new THREE.Mesh(geometry, material);
 
         var spheregeom = new THREE.SphereGeometry(5.1,32,32);
@@ -55,27 +60,43 @@ class Skull extends THREE.Object3D {
         ojo1.position.x-=2;
         ojo1.rotateZ(90*Math.PI/180);
         ojo2.rotateZ(90*Math.PI/180);
-
-        ojo1.scale.set(1,1,0.2);
         
-
         const ojos = new CSG();
         ojos.union([ojo1, ojo2]);
 
+        var nose = new THREE.Shape();
+        nose.moveTo( 25, 25 );
+        nose.bezierCurveTo( 25, 25, 20, 0, 0, 0 );
+        nose.bezierCurveTo( - 30, 0, - 30, 35, - 30, 35 );
+        nose.bezierCurveTo( - 30, 55, - 10, 77, 25, 95 );
+        nose.bezierCurveTo( 60, 77, 80, 55, 80, 35 );
+        nose.bezierCurveTo( 80, 35, 80, 0, 50, 0 );
+        nose.bezierCurveTo( 35, 0, 25, 25, 25, 25 );
+
+        var nosegeom = new THREE.ExtrudeGeometry(nose, this.settings_nariz);
+
+        const nariz = new THREE.Mesh(nosegeom, material);
+        nariz.scale.set(0.01,0.01,2);
+        nariz.position.set(-0.25,-3,-1);
         const craneo = new CSG();
         craneo.union([sphere]);
         craneo.subtract([box]);
-        
+
+        var bocageom = new THREE.BoxGeometry(14,0.75,1);
+
+        const boca = new THREE.Mesh(bocageom, material);
+
+        boca.position.y=-5.75;
+        boca.position.z=1;
 
         const figure = new CSG();
         figure.union([extrude, craneo.toMesh()]);
-        figure.subtract([ojos.toMesh()]);
+        figure.subtract([ojos.toMesh(), nariz, boca]);
         const resultadoCSG = figure.toMesh();
 
         const objeto = new THREE.Object3D();
         objeto.add(resultadoCSG);
-        //this.add(objeto);
-        this.add(ojo1);
+        this.add(objeto);
 
     }
 
