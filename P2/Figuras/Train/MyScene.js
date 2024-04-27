@@ -8,7 +8,7 @@ import { TrackballControls } from '../../libs/TrackballControls.js'
 
 // Clases de mi proyecto
 
-import { BadPotion } from './BadPotion.js.js'
+import { Train } from './Train.js'
 
 
 class MyScene extends THREE.Scene {
@@ -46,10 +46,10 @@ class MyScene extends THREE.Scene {
     // la gui y el texto bajo el que se agruparán los controles de la interfaz que añada el modelo.
     //var jarra = new Jarra (this.gui, "Controles de la Jarra");
     //var tuerca = new Tuerca (this.gui, "Controles de la Tuerca");
-    this.potion = new BadPotion (this.gui, "Controles de la Figura");
+    this.train = new Train (this.gui, "Controles de la Figura");
     //this.add (jarra);
     //this.add (tuerca);
-    this.add (this.potion);
+    this.add (this.train);
   }
   
   createCamera () {
@@ -211,7 +211,7 @@ class MyScene extends THREE.Scene {
     // Se actualiza la posición de la cámara según su controlador
     this.cameraControl.update();
 
-    this.potion.update();
+    this.train.update();
     
     // Este método debe ser llamado cada vez que queramos visualizar la escena de nuevo.
     // Literalmente le decimos al navegador: "La próxima vez que haya que refrescar la pantalla, llama al método que te indico".
