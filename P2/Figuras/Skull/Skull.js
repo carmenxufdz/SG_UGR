@@ -33,8 +33,11 @@ class Skull extends THREE.Object3D {
         }
 
         var geometry = new THREE.ExtrudeGeometry(shape, this.settings);
-        var material = new THREE.MeshNormalMaterial( { color: 0xFFF8E4 } ); // amarillo
-        //var material = new THREE.MeshPhongMaterial({color: 0xffffff});
+        var material = new THREE.MeshStandardMaterial({
+            color: 0xF5DEB3, // A shade of off-white with a yellow tint
+            roughness: 0.5, // Adjust the roughness to your liking
+            metalness: 0.1, // Adjust the metalness to your liking
+          });
         const extrude = new THREE.Mesh(geometry, material);
 
         var spheregeom = new THREE.SphereGeometry(5.1,32,32);
