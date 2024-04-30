@@ -8,7 +8,7 @@ import { TrackballControls } from '../../libs/TrackballControls.js'
 
 // Clases de mi proyecto
 
-import { Rayo } from './Rayo.js'
+import { Snitch } from './Snitch.js'
 
 
 class MyScene extends THREE.Scene {
@@ -46,10 +46,10 @@ class MyScene extends THREE.Scene {
     // la gui y el texto bajo el que se agruparán los controles de la interfaz que añada el modelo.
     //var jarra = new Jarra (this.gui, "Controles de la Jarra");
     //var tuerca = new Tuerca (this.gui, "Controles de la Tuerca");
-    this.rayo = new Rayo (this.gui, "Controles de la Figura");
+    this.snitch = new Snitch (this.gui, "Controles de la Figura");
     //this.add (jarra);
     //this.add (tuerca);
-    this.add (this.rayo);
+    this.add (this.snitch);
   }
   
   createCamera () {
@@ -106,8 +106,8 @@ class MyScene extends THREE.Scene {
     // En este caso la intensidad de la luz y si se muestran o no los ejes
     this.guiControls = {
       // En el contexto de una función   this   alude a la función
-      lightPower : 100.0,  // La potencia de esta fuente de luz se mide en lúmenes
-      ambientIntensity : 0.35,
+      lightPower : 10.0,  // La potencia de esta fuente de luz se mide en lúmenes
+      ambientIntensity : 1,
       axisOnOff : true
     }
 
@@ -211,7 +211,7 @@ class MyScene extends THREE.Scene {
     // Se actualiza la posición de la cámara según su controlador
     this.cameraControl.update();
 
-    this.rayo.update();
+    this.snitch.update();
     
     // Este método debe ser llamado cada vez que queramos visualizar la escena de nuevo.
     // Literalmente le decimos al navegador: "La próxima vez que haya que refrescar la pantalla, llama al método que te indico".
