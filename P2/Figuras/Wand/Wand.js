@@ -1,6 +1,6 @@
 import * as THREE from '../../libs/three.module.js'
 
-class Rayo extends THREE.Object3D {
+class Wand extends THREE.Object3D {
     constructor(gui, titleGui)
     {
         super();
@@ -9,32 +9,33 @@ class Rayo extends THREE.Object3D {
         this.createShape(shape);
 
         this.settings = {
-            steps: 10, // — int. Number of points used for subdividing segments along the depth of the extruded spline
-            depth: 0.1, // — float. Depth to extrude the shape
+            steps: 0, // — int. Number of points used for subdividing segments along the depth of the extruded spline
+            depth: 0, // — float. Depth to extrude the shape
         };
 
         var geometry = new THREE.ExtrudeGeometry(shape, this.settings);
         var material = new THREE.MeshPhysicalMaterial( { color: 0xffff00 } ); // amarillo
 
-        this.rayo = new THREE.Mesh(geometry, material);
+        this.Wand = new THREE.Mesh(geometry, material);
 
-        this.add( this.rayo );
+        this.add( this.Wand );
 
-        this.rayo.rotateZ(-30*Math.PI/180);
+        this.Wand.rotateZ(-30*Math.PI/180);
     }
 
     createShape(shape)
     {
-        shape.moveTo(-0.2,2,0);
-        shape.lineTo(-1,-1,0);
-        shape.lineTo(0.1,-0.3,0);
-        shape.lineTo(0.2,-2,0);
-        shape.lineTo(1,1,0);
-        shape.lineTo(-0.1,0.3,0);
+        shape.moveTo(0, 1);      
+        shape.lineTo(0.294, 0.809);  
+        shape.lineTo(0.588, 0.809);  
+        shape.lineTO(,-0.309)  
+        shape.lineTo(0.951, -0.309);         
+        shape.lineTo(-0.951, -0.309);        
+        shape.lineTo(-0.588, 0.809);         
     }
     update()
     {
     }
 }
 
-export { Rayo };
+export { Wand };
