@@ -24,12 +24,12 @@ class Train extends THREE.Object3D {
         var material = new THREE.MeshNormalMaterial();
 
         /* LOCOMOTOR */
-        var cylindergeom = new THREE.CylinderGeometry(5, 5, 17.5);
+        var cylindergeom = new THREE.CylinderGeometry(5, 5, 17.5, 30);
 
         const cylinder = new THREE.Mesh(cylindergeom, material);
         cylinder.rotateZ(90*Math.PI/180); // Rot
 
-        var cygeom = new THREE.CylinderGeometry(1.25, 1.25, 2.5);
+        var cygeom = new THREE.CylinderGeometry(1.25, 1.25, 2.5, 30);
 
         const cy = new THREE.Mesh(cygeom, material);
         cy.position.set(-6,6,0);
@@ -99,7 +99,7 @@ class Train extends THREE.Object3D {
 
         /* RUEDAS */
 
-        var ruedaGgeom = new THREE.CylinderGeometry(3,3,1);
+        var ruedaGgeom = new THREE.CylinderGeometry(3,3,1, 30);
 
         const ruedaG1 = new THREE.Mesh(ruedaGgeom, aceromaterial);
         ruedaG1.rotateX(90*Math.PI/180);
@@ -114,7 +114,7 @@ class Train extends THREE.Object3D {
         const ruedaG4 = ruedaG1.clone();
         ruedaG4.position.set(7, -5, -5.5);
 
-        var ruedaPgeom = new THREE.CylinderGeometry(2,2,1);
+        var ruedaPgeom = new THREE.CylinderGeometry(2,2,1, 30);
 
         const ruedaP1 = new THREE.Mesh(ruedaPgeom, aceromaterial);
         ruedaP1.rotateX(90*Math.PI/180);

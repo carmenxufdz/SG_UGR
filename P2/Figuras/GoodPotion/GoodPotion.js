@@ -15,11 +15,11 @@ class GoodPotion extends THREE.Object3D {
         this.createGlass(glasspoints);
 
         var glassmaterial = new THREE.MeshPhysicalMaterial({
-            roughness: 0,
+            roughness: 0.5,
             transmission: 1,
             thickness: 0.5,
             transparent: true,
-            opacity: 0.8,
+            opacity: 0.6,
             refractionRatio: 0.95,
             color: 0xffffff,
             metalness: 0,
@@ -32,19 +32,21 @@ class GoodPotion extends THREE.Object3D {
 
         var liquidmaterial = new THREE.MeshPhysicalMaterial({
             color: 0xffc300,
-            transmission: 0.6,
-            roughness: 0.1,
-            metalness: 0.0,
+            transmission: 1, // Transparency value
+            opacity: 1, // Transparency value
+            roughness: 0.5, // Roughness value
+            metalness: 0, // Metalness value
             ior: 1.33, // index of refraction for water
         });
 
-        var corchomaterial = new THREE.MeshPhysicalMaterial({
+        var corchomaterial = new THREE.MeshBasicMaterial({
             color: 0xCD9573,
-            roughness: 0.9, // alta rugosidad
-            metalness: 0.0, // baja metalicidad
+            roughness: 0.8, // alta rugosidad
+            metalness: 0, // baja metalicidad
+            specularIntensity: 0,
+            emissiveIntensity: 0,
             map: texture
         });
-
         var crystal = new THREE.Mesh(new THREE.LatheGeometry(glasspoints,20),glassmaterial);
 
         var holepoints = [];

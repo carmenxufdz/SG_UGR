@@ -106,8 +106,8 @@ class MyScene extends THREE.Scene {
     // En este caso la intensidad de la luz y si se muestran o no los ejes
     this.guiControls = {
       // En el contexto de una función   this   alude a la función
-      lightPower : 100.0,  // La potencia de esta fuente de luz se mide en lúmenes
-      ambientIntensity : 0.35,
+      lightPower : 0.0,  // La potencia de esta fuente de luz se mide en lúmenes
+      ambientIntensity : 1.0,
       axisOnOff : true
     }
 
