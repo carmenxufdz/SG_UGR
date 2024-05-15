@@ -8,7 +8,7 @@ import { TrackballControls } from '../../libs/TrackballControls.js'
 
 // Clases de mi proyecto
 
-import { BadPotion } from './BadPotion.js.js'
+import { BadPotion } from './BadPotion.js'
 
 
 class MyScene extends THREE.Scene {

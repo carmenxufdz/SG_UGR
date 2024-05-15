@@ -8,7 +8,7 @@ import { TrackballControls } from '../../libs/TrackballControls.js'
 
 // Clases de mi proyecto
 
-import { Rayo } from './Rayo.js'
+import { Book } from './Book.js'
 
 
 class MyScene extends THREE.Scene {
@@ -46,10 +46,9 @@ class MyScene extends THREE.Scene {
     // la gui y el texto bajo el que se agruparán los controles de la interfaz que añada el modelo.
     //var jarra = new Jarra (this.gui, "Controles de la Jarra");
     //var tuerca = new Tuerca (this.gui, "Controles de la Tuerca");
-    this.rayo = new Rayo (this.gui, "Controles de la Figura");
-    //this.add (jarra);
-    //this.add (tuerca);
-    this.add (this.rayo);
+    this.book = new Book (this.gui, "Controles de la Figura");
+
+    this.add (this.book);
   }
   
   createCamera () {
@@ -106,7 +105,7 @@ class MyScene extends THREE.Scene {
     // En este caso la intensidad de la luz y si se muestran o no los ejes
     this.guiControls = {
       // En el contexto de una función   this   alude a la función
-      lightPower : 100.0,  // La potencia de esta fuente de luz se mide en lúmenes
+      lightPower : 10.0,  // La potencia de esta fuente de luz se mide en lúmenes
       ambientIntensity : 0.35,
       axisOnOff : true
     }
@@ -147,7 +146,7 @@ class MyScene extends THREE.Scene {
     // En este caso se declara como   this.atributo   para que sea un atributo accesible desde otros métodos.
     this.pointLight = new THREE.SpotLight( 0xffffff );
     this.pointLight.power = this.guiControls.lightPower;
-    this.pointLight.position.set( 2, 3, 1 );
+    this.pointLight.position.set( 2, -3, 5 );
     this.add (this.pointLight);
   }
   
@@ -211,7 +210,7 @@ class MyScene extends THREE.Scene {
     // Se actualiza la posición de la cámara según su controlador
     this.cameraControl.update();
 
-    this.rayo.update();
+    this.book.update();
     
     // Este método debe ser llamado cada vez que queramos visualizar la escena de nuevo.
     // Literalmente le decimos al navegador: "La próxima vez que haya que refrescar la pantalla, llama al método que te indico".

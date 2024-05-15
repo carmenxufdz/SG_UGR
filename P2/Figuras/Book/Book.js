@@ -1,40 +1,68 @@
 import * as THREE from '../../libs/three.module.js'
 
-class Rayo extends THREE.Object3D {
+class Book extends THREE.Object3D {
     constructor(gui, titleGui)
     {
         super();
 
-        var shape = new THREE.Shape();
-        this.createShape(shape);
+        var textureLoader = new THREE.TextureLoader();
+        var texture = textureLoader.load('../../imgs/paper.jpg');
 
-        this.settings = {
-            steps: 10, // — int. Number of points used for subdividing segments along the depth of the extruded spline
-            depth: 0.1, // — float. Depth to extrude the shape
-        };
+        var coverMaterial = new THREE.MeshPhysicalMaterial( { 
+            color: 0x003F77,
+            roughness: 0.5,
+            metalness: 0,
+        } ); // amarillo
 
-        var geometry = new THREE.ExtrudeGeometry(shape, this.settings);
-        var material = new THREE.MeshPhysicalMaterial( { color: 0xffff00 } ); // amarillo
+        var pageMaterial = new THREE.MeshStandardMaterial({
+            color: 0xBDBDBD, // white color
+            roughness: 0.5, // roughness value
+            metalness: 0, // metalness value
+            side: THREE.DoubleSide, // double-sided material
+            map: texture
+        });
 
-        this.rayo = new THREE.Mesh(geometry, material);
+        var tapageom = new THREE.BoxGeometry(2,3,0.25);
+        this.tapa = new THREE.Mesh(tapageom,coverMaterial);
+        this.tapa2 = this.tapa.clone();
 
-        this.add( this.rayo );
+        this.tapa.rotateX(90*Math.PI/180);
+        this.tapa.rotateY(-30*Math.PI/180);
+        this.tapa.position.set(1,0,0);
 
-        this.rayo.rotateZ(-30*Math.PI/180);
+        this.tapa2.rotateX(90*Math.PI/180);
+        this.tapa2.rotateY(30*Math.PI/180);
+        this.tapa2.position.set(-1,0,0);
+
+        var uniongeom = new THREE.BoxGeometry(0.5,3,0.25);
+        this.union = new THREE.Mesh(uniongeom,coverMaterial);
+        this.union.rotateX(90*Math.PI/180);
+        this.union.position.set(0,0.5,0);
+
+        var pagegeom = new THREE.BoxGeometry(1.9,2.8,0.5);
+        this.page1 = new THREE.Mesh(pagegeom,pageMaterial);
+        this.page2 = this.page1.clone();
+
+        this.page1.rotateX(90*Math.PI/180);
+        this.page1.rotateY(30*Math.PI/180);
+        this.page1.position.set(-0.8,-0.1,0);
+
+        this.page2.rotateX(90*Math.PI/180);
+        this.page2.rotateY(-30*Math.PI/180);
+        this.page2.position.set(0.8,-0.1,0);
+
+
+        this.add(this.tapa);
+        this.add(this.page1);
+        this.add(this.tapa2);
+        this.add(this.page2);
+        this.add(this.union);
     }
 
-    createShape(shape)
-    {
-        shape.moveTo(-0.2,2,0);
-        shape.lineTo(-1,-1,0);
-        shape.lineTo(0.1,-0.3,0);
-        shape.lineTo(0.2,-2,0);
-        shape.lineTo(1,1,0);
-        shape.lineTo(-0.1,0.3,0);
-    }
+
     update()
     {
     }
 }
 
-export { Rayo };
+export { Book };

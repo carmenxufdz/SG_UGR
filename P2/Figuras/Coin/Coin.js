@@ -1,6 +1,7 @@
 import * as THREE from '../../libs/three.module.js'
+import { CSG } from '../../libs/CSG-v2.js'
 
-class Rayo extends THREE.Object3D {
+class Coin extends THREE.Object3D {
     constructor(gui, titleGui)
     {
         super();
@@ -13,28 +14,45 @@ class Rayo extends THREE.Object3D {
             depth: 0.1, // — float. Depth to extrude the shape
         };
 
-        var geometry = new THREE.ExtrudeGeometry(shape, this.settings);
+        var stargeom = new THREE.ExtrudeGeometry(shape, this.settings);
         var material = new THREE.MeshPhysicalMaterial( { color: 0xffff00 } ); // amarillo
 
-        this.rayo = new THREE.Mesh(geometry, material);
+        this.star = new THREE.Mesh(stargeom, material);
+        this.star.scale.set(0.15,0.15,1);
+        this.star.position.set(0,0,0);
 
-        this.add( this.rayo );
 
-        this.rayo.rotateZ(-30*Math.PI/180);
+        var cylindergeom = new THREE.CylinderGeometry(1.5,1.5,0.5,30);
+
+        this.cylinder = new THREE.Mesh(cylindergeom, material);
+        this.cylinder.rotateZ(90*Math.PI/180);
+        this.cylinder.rotateX(90*Math.PI/180);
+
+        var coinCSG = new CSG();
+        coinCSG.union([this.cylinder]);
+        coinCSG.subtract([this.star]);
+
+        this.coin = coinCSG.toMesh();
+
+        this.add(this.coin);
     }
 
     createShape(shape)
     {
-        shape.moveTo(-0.2,2,0);
-        shape.lineTo(-1,-1,0);
-        shape.lineTo(0.1,-0.3,0);
-        shape.lineTo(0.2,-2,0);
-        shape.lineTo(1,1,0);
-        shape.lineTo(-0.1,0.3,0);
+        shape.moveTo(0, -3);
+        shape.lineTo(4,-6);
+        shape.lineTo(3,0);
+        shape.lineTo(7,3);
+        shape.lineTo(2,3);
+        shape.lineTo(0,8);
+        shape.lineTo(-2,3);
+        shape.lineTo(-7,3);
+        shape.lineTo(-3, 0);
+        shape.lineTo(-4,-6);
     }
     update()
     {
     }
 }
 
-export { Rayo };
+export { Coin };
