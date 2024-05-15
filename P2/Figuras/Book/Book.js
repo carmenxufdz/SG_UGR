@@ -8,7 +8,7 @@ class Book extends THREE.Object3D {
         var textureLoader = new THREE.TextureLoader();
         var texture = textureLoader.load('../../imgs/paper.jpg');
 
-        var coverMaterial = new THREE.MeshPhysicalMaterial( { 
+        var coverMaterial = new THREE.MeshStandardMaterial( { 
             color: 0x003F77,
             roughness: 0.5,
             metalness: 0,
