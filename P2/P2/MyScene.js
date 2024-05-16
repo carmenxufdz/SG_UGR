@@ -43,10 +43,7 @@ class MyScene extends THREE.Scene {
     
     
     // Por último creamos el modelo.
-    // El modelo puede incluir su parte de la interfaz gráfica de usuario. Le pasamos la referencia a 
-    // la gui y el texto bajo el que se agruparán los controles de la interfaz que añada el modelo.
-    //var jarra = new Jarra (this.gui, "Controles de la Jarra");
-    //var tuerca = new Tuerca (this.gui, "Controles de la Tuerca");
+
     this.circuito = new Circuito (this.gui, "Controles de la Figura");
     this.add (this.circuito);
 
@@ -227,6 +224,8 @@ class MyScene extends THREE.Scene {
     this.cameraControl.update();
 
     this.circuito.update();
+
+    this.train.update();
     
     // Este método debe ser llamado cada vez que queramos visualizar la escena de nuevo.
     // Literalmente le decimos al navegador: "La próxima vez que haya que refrescar la pantalla, llama al método que te indico".

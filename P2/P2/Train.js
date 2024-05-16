@@ -1,25 +1,32 @@
-import * as THREE from '../../libs/three.module.js'
-import { CSG } from '../../libs/CSG-v2.js'
-
+import * as THREE from '../libs/three.module.js'
+import * as TWEEN from '../libs/tween.esm.js'
+import { CSG } from '../libs/CSG-v2.js'
+import { Circuito } from './Circuito.js';
 class Train extends THREE.Object3D {
     constructor(gui, titleGui)
     {
         super();
 
+        this.path = []; // Initialize the path array
+
+        // Create the path using the Circuito class
+        const circuito = new Circuito(gui, titleGui);
+        this.path = circuito.getRuta();
+        
+        // Create the CatmullRomCurve3 object
+        this.curve = new THREE.CatmullRomCurve3(this.path);
+
+        var tiempoDeRecorrido = 4000; // Initialize the animation speed (in milliseconds)
+        this.segmentos = 100; // Initialize the number of segments
+        this.binormales = this.curve.computeFrenetFrames(this.segmentos, true).binormals; // Initialize the binormals array      
+
+        var origen = {t:0};
+        var fin = {t:1};
+
+
+
         var textureLoader = new THREE.TextureLoader();
         var acero = textureLoader.load('../../imgs/acero.jpg');
-
-        /*var material = new THREE.MeshLambertMaterial({
-            color: 0xff0000, // Bright red color
-            roughness: 0.5, // Add some roughness to give it a slightly worn look
-            metalness: 0.1, // Add some metalness to give it a slight shine
-          });
-
-          var material2 = new THREE.MeshLambertMaterial({
-            color: 0xffff00, // Bright yellow color
-            roughness: 0.5, // Add some roughness to give it a slightly worn look
-            metalness: 0.1, // Add some metalness to give it a slight shine
-          });*/
 
         var material = new THREE.MeshNormalMaterial();
 
@@ -139,10 +146,21 @@ class Train extends THREE.Object3D {
         this.add(ruedas);
 
         this.scale.set(0.5,0.5,0.5);
+
+        var animacion = new TWEEN.Tween(origen).to(fin, tiempoDeRecorrido).onUpdate(() =>{
+          var posicion = this.curve.getPointAt(origen.t);
+          this.position.copy(posicion);
+          var tangente = this.curve.getTangentAt(origen.t);
+          posicion.add(tangente);
+          this.up + this.binormales[Math.floor(origen.t * this.segmentos)];
+          this.lookAt(posicion);
+        });
+
+
     }
 
-    update()
-    {
+    update() {
+        
     }
 }
 
