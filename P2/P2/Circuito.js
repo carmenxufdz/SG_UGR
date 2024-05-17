@@ -41,8 +41,8 @@ class Circuito extends THREE.Object3D {
 
         var geometriaTubo_MESH = new THREE.Mesh(geometriaTubo, material);
 
-        geometriaTubo_MESH.scale.set(20,20,20);
-        geometriaTubo_MESH.rotateX(90*Math.PI/180);
+        //geometriaTubo_MESH.scale.set(20,20,20);
+        //geometriaTubo_MESH.rotateX(90*Math.PI/180);
         this.add(geometriaTubo_MESH);
                 
     }
