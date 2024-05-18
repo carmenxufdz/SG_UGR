@@ -2,9 +2,9 @@
 // Clases de la biblioteca
 // import * as THREE from "three"
 
-import * as THREE from '../../libs/three.module.js'
-import { GUI } from '../../libs/dat.gui.module.js'
-import { TrackballControls } from '../../libs/TrackballControls.js'
+import * as THREE from '../libs/three.module.js'
+import { GUI } from '../libs/dat.gui.module.js'
+import { TrackballControls } from '../libs/TrackballControls.js'
 
 // Clases de mi proyecto
 
@@ -32,20 +32,23 @@ class MyScene extends THREE.Scene {
   constructor (myCanvas) { 
     super();
     
+    this.general = true; // variable global para cambiar de camara
+    window.addEventListener('keydown', this.onKeyDown.bind(this), false);
+
     // Lo primero, crear el visualizador, pasándole el lienzo sobre el que realizar los renderizados.
     this.renderer = this.createRenderer(myCanvas);
     
     // Se crea la interfaz gráfica de usuario
-    this.gui = this.createGUI ();
+    //this.gui = this.createGUI ();
     
     // Construimos los distinos elementos que tendremos en la escena
     
     // Todo elemento que se desee sea tenido en cuenta en el renderizado de la escena debe pertenecer a esta. Bien como hijo de la escena (this en esta clase) o como hijo de un elemento que ya esté en la escena.
     // Tras crear cada elemento se añadirá a la escena con   this.add(variable)
-    this.createLights ();
+    //this.createLights ();
     
     // Tendremos una cámara con un control de movimiento con el ratón
-    this.createCamera ();
+    this.createCameraGeneral();
     
     // Un suelo 
     //this.createGround ();
@@ -64,45 +67,59 @@ class MyScene extends THREE.Scene {
     this.train = new Train(this.gui, "Controles del Tren");
     this.add(this.train);
 
-  }
-
-  createObjects(){
+    this.createCameraTerceraPersona();
 
   }
-  
+
+  createObjects(){} onKeyDown(event){} onKeyUp(event){}
+
   onKeyDown(event){
-
+    if (event.keyCode === 32) { // 32 es el código de la tecla de la barra espaciadora
+      this.general = !this.general;
+    }
   }
 
-  onKeyUp(event){
-
-
-  }
-
-  createCamera () {
+  createCameraGeneral () {
     // Para crear una cámara le indicamos
     //   El ángulo del campo de visión vértical en grados sexagesimales
     //   La razón de aspecto ancho/alto
     //   Los planos de recorte cercano y lejano
-    this.camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.01, 1000);
+    this.camerageneral = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.01, 1000);
     // También se indica dónde se coloca
-    this.camera.position.set (20, 10, 20);
+    this.camerageneral.position.set (20, 10, 20);
     // Y hacia dónde mira
     var look = new THREE.Vector3 (0,0,0);
-    this.camera.lookAt(look);
-    this.add (this.camera);
+    this.camerageneral.lookAt(look);
+    this.add (this.camerageneral);
     
     // Para el control de cámara usamos una clase que ya tiene implementado los movimientos de órbita
-    this.cameraControl = new TrackballControls (this.camera, this.renderer.domElement);
+    this.camerageneralControl = new TrackballControls (this.camerageneral, this.renderer.domElement);
     
     // Se configuran las velocidades de los movimientos
-    this.cameraControl.rotateSpeed = 5;
-    this.cameraControl.zoomSpeed = -2;
-    this.cameraControl.panSpeed = 0.5;
+    this.camerageneralControl.rotateSpeed = 5;
+    this.camerageneralControl.zoomSpeed = -2;
+    this.camerageneralControl.panSpeed = 0.5;
     // Debe orbitar con respecto al punto de mira de la cámara
-    this.cameraControl.target = look;
+    this.camerageneralControl.target = look;
+  }
+
+  createCameraTerceraPersona () { //camara subjetiva
+
+    this.cameratren = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.01, 1000);
+
+    this.train.add (this.cameratren);
+    this.cameratren.position.set(0,0.15,0);
+
+    var puntoDeMiraRelativo = new THREE.Vector3 (0,0,2);
+
+    var target = new THREE.Vector3();
+    this.cameratren.getWorldPosition(target);
+    target.add(puntoDeMiraRelativo);
+
+    this.cameratren.lookAt(target);
   }
   
+  /*
   createGround () {
     // El suelo es un Mesh, necesita una geometría y un material.
     
@@ -189,7 +206,7 @@ class MyScene extends THREE.Scene {
   setAxisVisible (valor) {
     this.axis.visible = valor;
   }
-  
+  */
   createRenderer (myCanvas) {
     // Se recibe el lienzo sobre el que se van a hacer los renderizados. Un div definido en el html.
     
@@ -211,23 +228,42 @@ class MyScene extends THREE.Scene {
   getCamera () {
     // En principio se devuelve la única cámara que tenemos
     // Si hubiera varias cámaras, este método decidiría qué cámara devuelve cada vez que es consultado
-    return this.camera;
+    if (this.general == true)
+      return this.camerageneral;
+    else
+      return this.cameratren;
   }
   
   setCameraAspect (ratio) {
     // Cada vez que el usuario modifica el tamaño de la ventana desde el gestor de ventanas de
     // su sistema operativo hay que actualizar el ratio de aspecto de la cámara
-    this.camera.aspect = ratio;
+    if (this.general == true){
+      this.camerageneral.aspect = ratio;
     // Y si se cambia ese dato hay que actualizar la matriz de proyección de la cámara
-    this.camera.updateProjectionMatrix();
+      this.camerageneral.updateProjectionMatrix();
+    }
+    else{
+      this.cameratren.aspect = ratio;
+      // Y si se cambia ese dato hay que actualizar la matriz de proyección de la cámara
+      this.cameratren.updateProjectionMatrix();
+    }
   }
     
   onWindowResize () {
     // Este método es llamado cada vez que el usuario modifica el tamapo de la ventana de la aplicación
     // Hay que actualizar el ratio de aspecto de la cámara
-    this.setCameraAspect (window.innerWidth / window.innerHeight);
-    
-    // Y también el tamaño del renderizador
+    if (this.general == true){
+      var camara = this.camerageneral;
+      var nuevaRatio = window.innerWidth / window.innerHeight;
+      camara.aspect = nuevaRatio;
+    }
+    else{
+      var camara = this.cameratren;
+      var nuevaRatio = window.innerWidth / window.innerHeight;
+      camara.aspect = nuevaRatio;
+    }
+
+    camara.updateProjectionMatrix();
     this.renderer.setSize (window.innerWidth, window.innerHeight);
   }
 
@@ -236,7 +272,8 @@ class MyScene extends THREE.Scene {
     this.renderer.render (this, this.getCamera());
 
     // Se actualiza la posición de la cámara según su controlador
-    this.cameraControl.update();
+    if (this.general == true)
+      this.camerageneralControl.update();
 
     this.circuito.update();
 

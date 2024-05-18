@@ -26,7 +26,7 @@ class Train extends THREE.Object3D {
         var fin = {t:1};
 
         this.createLocomotor();
-        this.createCamara();
+        //this.createCamara();
         this.createBase();
         this.createRuedas();
         this.scale.set(0.05,0.05,0.05);
@@ -66,10 +66,10 @@ class Train extends THREE.Object3D {
 
       this.add(locomotor);
     }
-
+    /*
     createCamara(){
         var material = new THREE.MeshNormalMaterial();
-        /* CAMARA DEL TREN */
+        /* CAMARA DEL TREN 
         var boxgeom = new THREE.BoxGeometry(10,12,10);
 
         const box = new THREE.Mesh(boxgeom, material);
@@ -99,7 +99,7 @@ class Train extends THREE.Object3D {
 
         this.add(camara);
     }
-
+    */
     createBase(){
       var textureLoader = new THREE.TextureLoader();
       var acero = textureLoader.load('../../imgs/acero.jpg');
