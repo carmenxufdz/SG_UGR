@@ -9,8 +9,22 @@ import { TrackballControls } from '../../libs/TrackballControls.js'
 // Clases de mi proyecto
 
 import { Circuito } from './Circuito.js'
-
 import { Train } from './Train.js'
+
+import {Apple} from './Modelos/Apple.js'
+import {BadMushroom} from './Modelos/BadMushroom.js'
+import {BadPotion} from './Modelos/BadPotion.js'
+import {Book} from './Modelos/Book.js'
+import {Coin} from './Modelos/Coin.js'
+import {GoodPotion} from './Modelos/GoodPotion.js'
+import {Mushroom} from './Modelos/Mushroom.js'
+import {Rayo} from './Modelos/Rayo.js'
+import {Ring} from './Modelos/Ring.js'
+import {Skull} from './Modelos/Skull.js'
+import {Snitch} from './Modelos/Snitch.js'
+import {Wand} from './Modelos/Wand.js'
+
+
 
 class MyScene extends THREE.Scene {
   // Recibe el  div  que se ha creado en el  html  que va a ser el lienzo en el que mostrar
@@ -49,6 +63,7 @@ class MyScene extends THREE.Scene {
 
     this.train = new Train(this.gui, "Controles del Tren");
     this.add(this.train);
+
   }
 
   createObjects(){
@@ -246,4 +261,5 @@ $(function () {
   
   // Que no se nos olvide, la primera visualización.
   scene.update();
+
 });

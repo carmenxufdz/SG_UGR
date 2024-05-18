@@ -1,6 +1,6 @@
 import * as THREE from '../../libs/three.module.js'
 
-class Mushroom extends THREE.Object3D {
+class BadMushroom extends THREE.Object3D {
     constructor(gui, titleGui)
     {
         super();
@@ -74,4 +74,4 @@ class Mushroom extends THREE.Object3D {
     
 }
 
-export { Mushroom };
+export { BadMushroom };

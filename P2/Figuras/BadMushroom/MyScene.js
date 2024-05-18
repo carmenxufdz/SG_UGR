@@ -8,7 +8,7 @@ import { TrackballControls } from '../../libs/TrackballControls.js'
 
 // Clases de mi proyecto
 
-import { Mushroom } from './Mushroom.js'
+import { BadMushroom } from './BadMushroom.js'
 
 
 class MyScene extends THREE.Scene {
@@ -46,7 +46,7 @@ class MyScene extends THREE.Scene {
     // la gui y el texto bajo el que se agruparán los controles de la interfaz que añada el modelo.
     //var jarra = new Jarra (this.gui, "Controles de la Jarra");
     //var tuerca = new Tuerca (this.gui, "Controles de la Tuerca");
-    this.mushroom = new Mushroom (this.gui, "Controles de la Figura");
+    this.mushroom = new BadMushroom (this.gui, "Controles de la Figura");
     //this.add (jarra);
     //this.add (tuerca);
     this.add (this.mushroom);

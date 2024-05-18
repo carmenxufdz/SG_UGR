@@ -9,30 +9,30 @@ class Circuito extends THREE.Object3D {
         //CREAMOS EL TUBO
         
         this.pts = [
-            new THREE.Vector3(5,0,2.5),
-            new THREE.Vector3(10,5,0),
-            new THREE.Vector3(7.5,7.5,-1.25),
-            new THREE.Vector3(10,10,0),
-            new THREE.Vector3(5,12.5,1.25),
-            new THREE.Vector3(0,10,0),
-            new THREE.Vector3(2.5,7.5,-1.25),
-            new THREE.Vector3(0,5,0),
-            new THREE.Vector3(5,0,0),
-            new THREE.Vector3(10,-5,0),
-            new THREE.Vector3(12.5,-7.5,0),
-            new THREE.Vector3(10,-10,-1.25),
-            new THREE.Vector3(7.5,-7.5,0),
-            new THREE.Vector3(5,-6.25,0),
-            new THREE.Vector3(2.5,-7.5,0),
-            new THREE.Vector3(0,-10,-1.25),
-            new THREE.Vector3(-2.5,-7.5,0),
-            new THREE.Vector3(0,-5,0),
+            new THREE.Vector3(60,30,0),
+            new THREE.Vector3(90,15,30),
+            new THREE.Vector3(120,0,60),
+            new THREE.Vector3(86,0,86),
+            new THREE.Vector3(120,0,120),
+            new THREE.Vector3(60,0,150),
+            new THREE.Vector3(0,0,120),
+            new THREE.Vector3(30,0,86),
+            new THREE.Vector3(0,0,60),
+            new THREE.Vector3(60,0,0),
+            new THREE.Vector3(120,0,-60),
+            new THREE.Vector3(150,0,-86),
+            new THREE.Vector3(120,0,-120),
+            new THREE.Vector3(86,0,-86),
+            new THREE.Vector3(0,0,-100),
+            new THREE.Vector3(0,0,-30),
+            new THREE.Vector3(30,15,-15),
+            new THREE.Vector3(59,30,0),
         ];
 
         var path = new THREE.CatmullRomCurve3 (this.pts, true)
 
         var resolucion = 200;
-        var radio = 0.5;
+        var radio = 10;
         var segmentoCirculo = 20;
 
         var geometriaTubo = new THREE.TubeGeometry(path, resolucion, radio, segmentoCirculo, true);
