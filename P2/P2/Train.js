@@ -13,6 +13,13 @@ class Train extends THREE.Object3D {
         const circuito = new Circuito(gui, titleGui);
         this.path = circuito.getRuta();
         
+        this.createLocomotor();
+        //this.createCamara();
+        this.createBase();
+        this.createRuedas();
+        this.scale.set(0.01,0.01,0.01);
+        
+
         // Create the CatmullRomCurve3 object
         this.curve = new THREE.CatmullRomCurve3(this.path);
 
@@ -22,25 +29,24 @@ class Train extends THREE.Object3D {
 
         var origen = {t:0};
         var fin = {t:1};
+      
+      var animacion = new TWEEN.Tween(origen).to(fin, tiempoDeRecorrido).onUpdate(() =>{
+        var posicion = this.curve.getPointAt(origen.t);
+        posicion.z += 0.6;
+        this.position.copy(posicion);
+        var tangente = this.curve.getTangentAt(origen.t);
+        var binormal = new THREE.Vector3(0, 0, 1);
+        var normal = new THREE.Vector3().crossVectors(tangente, binormal).normalize();
+        this.up.copy(normal);
 
-        this.createLocomotor();
-        this.createCamara();
-        this.createBase();
-        this.createRuedas();
-        this.scale.set(0.05,0.05,0.05);
-
-        var animacion = new TWEEN.Tween(origen).to(fin, tiempoDeRecorrido).onUpdate(() =>{
-          var posicion = this.curve.getPointAt(origen.t);
-          this.position.copy(posicion);
-          var tangente = this.curve.getTangentAt(origen.t);
-          posicion.add(tangente);
-          this.up + this.binormales[Math.floor(origen.t * this.segmentos)];
-          this.lookAt(posicion);
-        });
-        animacion.start();
-
-
+        this.lookAt(posicion.clone().add(tangente));
+        this.rotation.z -= Math.PI*90 / 180;
+        this.rotation.y -= Math.PI*90 / 180;
+        
+      });
+      animacion.start();
     }
+    
 
     createLocomotor(){
       var material = new THREE.MeshNormalMaterial();
@@ -64,9 +70,10 @@ class Train extends THREE.Object3D {
       this.add(locomotor);
     }
 
+    /*
     createCamara(){
         var material = new THREE.MeshNormalMaterial();
-        /* CAMARA DEL TREN */
+        /* CAMARA DEL TREN 
         var boxgeom = new THREE.BoxGeometry(10,12,10);
 
         const box = new THREE.Mesh(boxgeom, material);
@@ -96,6 +103,7 @@ class Train extends THREE.Object3D {
 
         this.add(camara);
     }
+    */
 
     createBase(){
       var textureLoader = new THREE.TextureLoader();
