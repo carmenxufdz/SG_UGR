@@ -70,6 +70,8 @@ class Apple extends THREE.Object3D {
         this.add(meshRabo);
         this.add(resultadoMesh);
         this.add(resultadoMesh2);
+
+        this.scale.set(0.1,0.1,0.1);
         
     }
 

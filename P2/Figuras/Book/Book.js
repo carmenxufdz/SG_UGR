@@ -5,6 +5,10 @@ class Book extends THREE.Object3D {
     {
         super();
 
+        this.sube - true;
+
+        this.subir = 0.0;
+
         var textureLoader = new THREE.TextureLoader();
         var texture = textureLoader.load('../../imgs/paper.jpg');
 
@@ -62,6 +66,19 @@ class Book extends THREE.Object3D {
 
     update()
     {
+        if(this.sube && this.subir <=2.0){
+            this.subir+=0.1;
+            this.position.y+=0.1;
+            if(this.subir >=2.0)
+                this.sube = false;
+        }
+        else if(!this.sube && this.subir >= -2.0){
+            this.subir-=0.1;
+            this.position.y-=0.1;
+            if(this.subir <= -2.0)
+                this.sube = true;
+        }
+
     }
 }
 

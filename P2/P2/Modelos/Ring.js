@@ -25,6 +25,8 @@ class Ring extends THREE.Object3D {
 
         this.add(meshToro);
         this.add(meshdiamond);
+
+        this.scale.set(0.3,0.3,0.3);
     }
 
 

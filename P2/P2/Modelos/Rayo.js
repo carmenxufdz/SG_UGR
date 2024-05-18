@@ -25,6 +25,8 @@ class Rayo extends THREE.Object3D {
         this.add( this.rayo );
 
         this.rayo.rotateZ(-15*Math.PI/180);
+
+        this.scale.set(0.2,0.2,0.2);
     }
 
     createShape(shape)

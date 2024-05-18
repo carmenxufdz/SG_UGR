@@ -52,6 +52,8 @@ class Mushroom extends THREE.Object3D {
         
         this.add (meshBase);;
         this.add (meshSombreroBueno);
+
+        this.scale.set(0.1,0.1,0.1);
         
     }
 

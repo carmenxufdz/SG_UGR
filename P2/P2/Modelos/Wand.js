@@ -39,6 +39,8 @@ class Wand extends THREE.Object3D {
         this.add( this.star );
         this.add( this.cylinder );
 
+        this.scale.set(0.1,0.1,0.1);
+
     }
 
     createShape(shape)

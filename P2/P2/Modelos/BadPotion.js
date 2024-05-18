@@ -78,7 +78,7 @@ class BadPotion extends THREE.Object3D {
         this.add(liquid);
 
         this.add(potion);
-        
+        this.scale.set(0.15,0.15,0.15);
     }
 
     createGlass(points)

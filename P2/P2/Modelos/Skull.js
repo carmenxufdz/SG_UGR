@@ -101,6 +101,8 @@ class Skull extends THREE.Object3D {
         objeto.add(resultadoCSG);
         this.add(objeto);
 
+        this.scale.set(0.05,0.05,0.05);
+
     }
 
     createShape(shape)

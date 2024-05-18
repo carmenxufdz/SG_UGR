@@ -24,7 +24,7 @@ class Snitch extends THREE.Object3D {
 
         var spheregeom = new THREE.SphereGeometry(2, 30, 30);
 
-        const sphere = new THREE.Mesh(spheregeom, material);
+        const sphere = new THREE.Mesh(spheregeom, goldMaterial);
 
         var minispheregeom = new THREE.SphereGeometry(0.5,30,30);
 

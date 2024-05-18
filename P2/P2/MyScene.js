@@ -38,25 +38,20 @@ class MyScene extends THREE.Scene {
     // Lo primero, crear el visualizador, pasándole el lienzo sobre el que realizar los renderizados.
     this.renderer = this.createRenderer(myCanvas);
     
+    this.derecha = false;
+    this.izquierda = false;
+
     // Se crea la interfaz gráfica de usuario
-    //this.gui = this.createGUI ();
+    this.gui = this.createGUI ();
     
     // Construimos los distinos elementos que tendremos en la escena
     
     // Todo elemento que se desee sea tenido en cuenta en el renderizado de la escena debe pertenecer a esta. Bien como hijo de la escena (this en esta clase) o como hijo de un elemento que ya esté en la escena.
     // Tras crear cada elemento se añadirá a la escena con   this.add(variable)
-    //this.createLights ();
+    this.createLights ();
     
     // Tendremos una cámara con un control de movimiento con el ratón
     this.createCameraGeneral();
-    
-    // Un suelo 
-    //this.createGround ();
-    
-    // Y unos ejes. Imprescindibles para orientarnos sobre dónde están las cosas
-    // Todas las unidades están en metros
-    //this.axis = new THREE.AxesHelper (0.2);
-    //this.add (this.axis);
     
     
     // Por último creamos el modelo.
@@ -67,13 +62,141 @@ class MyScene extends THREE.Scene {
     this.train = new Train(this.gui, "Controles del Tren");
     this.add(this.train);
 
+
+
+    this.trenposicion = 0;
+
     this.createCameraTerceraPersona();
+
+    this.createObjectsColisiones();
+    this.objetosColisiones = [
+      this.coin, this.mushroom, this.wand, this.ring, this.goodpotion,
+      this.rayo, this.badmushroom, this.skull, this. apple, this.badpotion,
+    ];
+
+    for(let i = 0; i<this.objetosColisiones.length; i++)
+      this.add(this.objetosColisiones[i]);
+
+    this.createObjectsVoladores();
+    this.objetosVoladores = [
+      this.book0, this.book1, this.book2, this.book3, this.book4, this.book5,
+      this.snitch,
+    ]
+
+    for(let i = 0; i<this.objetosVoladores.length; i++)
+      this.add(this.objetosVoladores[i]);
+    
 
   }
 
-  createObjects(){} onKeyDown(event){} onKeyUp(event){}
+  createObjectsColisiones(){
+    // OBJETOS BUENOS //
+    this.coin = new Coin(this.gui, "Controles de la Figura");
+    this.coin.position.set(30,10.25, 22.5);
 
-  onKeyDown(event){
+    var boxCoin = new THREE.Box3();
+    boxCoin.setFromObject(this.coin);
+
+    this.mushroom = new Mushroom(this.gui, "Controles de la Figura");
+    this.mushroom.position.set(110, 16, 50);
+
+    var boxMushrrom = new THREE.Box3();
+    boxMushrrom.setFromObject(this.mushroom);
+
+    this.wand = new Wand(this.gui, "Controles de la Figura");
+    this.wand.position.set(22, 10, -100);
+    
+    var boxWand = new THREE.Box3();
+    boxWand.setFromObject(this.wand);
+
+    this.ring = new Ring(this.gui, "Controles de la Figura");
+    this.ring.position.set(20, 10, 140);
+    
+    var boxRing = new THREE.Box3();
+    boxRing.setFromObject(this.ring);
+
+    this.goodpotion = new GoodPotion(this.gui, "Controles de la Figura");
+    this.goodpotion.position.set(20, 10.5, 80);
+    
+    var boxGoodpotion = new THREE.Box3();
+    boxGoodpotion.setFromObject(this.goodpotion);
+
+    // OBJETOS MALOS //
+
+    this.rayo = new Rayo(this.gui, "Controles de la Figura");
+    this.rayo.position.set(127,10.25, -120);
+    
+    var boxRayo = new THREE.Box3();
+    boxRayo.setFromObject(this.rayo);
+    
+    this.badmushroom = new BadMushroom(this.gui, "Controles de la Figura");
+    this.badmushroom.position.set(85,10, -20);
+
+    var boxBadmushroom = new THREE.Box3();
+    boxBadmushroom.setFromObject(this.badmushroom);
+
+    this.skull = new Skull(this.gui, "Controles de la Figura");
+    this.skull.position.set(-5,9.5, -40);
+
+    var boxSkull = new THREE.Box3();
+    boxSkull.setFromObject(this.skull);
+
+    this.apple = new Apple(this.gui, "Controles de la Figura");
+    this.apple.position.set(90,10, 140);
+
+    var boaxApple = new THREE.Box3();
+    boaxApple.setFromObject(this.apple);
+
+    this.badpotion = new BadPotion(this.gui, "Controles de la Figura");
+    this.badpotion.position.set(55,10.5, -90);
+
+    var boxBadpotion = new THREE.Box3();
+    boxBadpotion.setFromObject(this.badpotion);
+  }
+
+  createObjectsVoladores(){
+
+    this.book0 = new Book(this.gui, "Controles de la Figura")
+    this.book0.position.set(12, 12, 15);
+
+    this.book1 = new Book(this.gui, "Controles de la Figura")
+    this.book1.position.set(50, 15,140);
+
+    this.book2 = new Book(this.gui, "Controles de la Figura")
+    this.book2.position.set(-10, 11, -35);
+
+    this.book3 = new Book(this.gui, "Controles de la Figura")
+    this.book3.position.set(100, 25, 30);
+
+    this.book4 = new Book(this.gui, "Controles de la Figura")
+    this.book4.position.set(140, 14, -60);
+
+    this.book5 = new Book(this.gui, "Controles de la Figura")
+    this.book5.position.set(45, 13, -110);
+
+    this.snitch = new Snitch(this.gui, "Controles de la Figura");
+  }
+
+  onKeyDown = function (event){
+
+    if(event.keyCode == 65){ // A
+      this.izquierda = true;
+    }
+    if(event.keyCode == 68){ // D
+      this.derecha = true;
+    }
+  }
+
+  onKeyUp = function (event){
+    if(event.keyCode == 65){ // A
+      this.izquierda = false;
+    }
+    if(event.keyCode == 68){ // D
+      this.derecha = false;
+    }
+  }
+
+  onKeyPress = function (event){
     if (event.keyCode === 32) { // 32 es el código de la tecla de la barra espaciadora
       this.general = !this.general;
     }
@@ -108,9 +231,9 @@ class MyScene extends THREE.Scene {
     this.cameratren = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.01, 1000);
 
     this.train.add (this.cameratren);
-    this.cameratren.position.set(0,0.15,0);
+    this.cameratren.position.set(0,0.1,0);
 
-    var puntoDeMiraRelativo = new THREE.Vector3 (0,0,2);
+    var puntoDeMiraRelativo = new THREE.Vector3 (0,0,5);
 
     var target = new THREE.Vector3();
     this.cameratren.getWorldPosition(target);
@@ -119,7 +242,7 @@ class MyScene extends THREE.Scene {
     this.cameratren.lookAt(target);
   }
   
-  /*
+  
   createGround () {
     // El suelo es un Mesh, necesita una geometría y un material.
     
@@ -150,7 +273,7 @@ class MyScene extends THREE.Scene {
     // En este caso la intensidad de la luz y si se muestran o no los ejes
     this.guiControls = {
       // En el contexto de una función   this   alude a la función
-      lightPower : 100.0,  // La potencia de esta fuente de luz se mide en lúmenes
+      lightPower : 10.0,  // La potencia de esta fuente de luz se mide en lúmenes
       ambientIntensity : 0.35,
       axisOnOff : true
     }
@@ -206,7 +329,7 @@ class MyScene extends THREE.Scene {
   setAxisVisible (valor) {
     this.axis.visible = valor;
   }
-  */
+  
   createRenderer (myCanvas) {
     // Se recibe el lienzo sobre el que se van a hacer los renderizados. Un div definido en el html.
     
@@ -278,12 +401,27 @@ class MyScene extends THREE.Scene {
     this.circuito.update();
 
     this.train.update();
+
+    if(this.izquierda && this.trenposicion < 5){
+      this.trenposicion +=0.1;
+    }
+    if(this.derecha &&  this.trenposicion > -5){
+      this.trenposicion -=0.1;
+    }
+
+    this.train.translateX(this.trenposicion);
+
+    
+    for(let i = 0; i<this.objetosVoladores.length; i++)
+      this.objetosVoladores[i].update();
+    
     
     // Este método debe ser llamado cada vez que queramos visualizar la escena de nuevo.
     // Literalmente le decimos al navegador: "La próxima vez que haya que refrescar la pantalla, llama al método que te indico".
     // Si no existiera esta línea,  update()  se ejecutaría solo la primera vez.
     requestAnimationFrame(() => this.update())
   }
+  
 }
 
 
@@ -295,6 +433,9 @@ $(function () {
 
   // Se añaden los listener de la aplicación. En este caso, el que va a comprobar cuándo se modifica el tamaño de la ventana de la aplicación.
   window.addEventListener ("resize", () => scene.onWindowResize());
+  window.addEventListener ("keyup", (event) => scene.onKeyUp(event)); 
+  window.addEventListener ("keydown", (event) => scene.onKeyDown(event));  
+  window.addEventListener ("keypress", (event) => scene.onKeyPress(event));
   
   // Que no se nos olvide, la primera visualización.
   scene.update();

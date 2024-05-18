@@ -36,6 +36,8 @@ class BadMushroom extends THREE.Object3D {
         
         this.add (meshBase);
         this.add (meshSombreroMalo);
+        
+        this.scale.set(0.4,0.4,0.4);
     }
 
     createBase(base){

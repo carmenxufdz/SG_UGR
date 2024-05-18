@@ -15,7 +15,7 @@ class Coin extends THREE.Object3D {
         };
 
         var stargeom = new THREE.ExtrudeGeometry(shape, this.settings);
-        var material = new THREE.MeshPhysicalMaterial( { color: 0xffff00 } ); // amarillo
+        var material = new THREE.MeshStandardMaterial( { color: 0xffff00 } ); // amarillo
 
         this.star = new THREE.Mesh(stargeom, material);
         this.star.scale.set(0.15,0.15,1);
@@ -35,6 +35,8 @@ class Coin extends THREE.Object3D {
         this.coin = coinCSG.toMesh();
 
         this.add(this.coin);
+
+        this.scale.set(0.25,0.25,0.25);
     }
 
     createShape(shape)

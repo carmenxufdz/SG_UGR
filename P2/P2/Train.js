@@ -9,7 +9,6 @@ class Train extends THREE.Object3D {
 
         this.path = []; // Initialize the path array
 
-        this.direccion;
 
         // Create the path using the Circuito class
         const circuito = new Circuito(gui, titleGui);
@@ -26,22 +25,23 @@ class Train extends THREE.Object3D {
         var fin = {t:1};
 
         this.createLocomotor();
-        //this.createCamara();
+        this.createCamara();
         this.createBase();
         this.createRuedas();
-        this.scale.set(0.05,0.05,0.05);
+        this.scale.set(0.1,0.1,0.1);
 
-        var animacion = new TWEEN.Tween(origen).to(fin, this.tiempoDeRecorrido).onUpdate(() =>{
+        this.animacion = new TWEEN.Tween(origen).to(fin, this.tiempoDeRecorrido).onUpdate(() =>{
           var posicion = this.curve.getPointAt(origen.t);
-          posicion.y+=10.25;
+          posicion.y+=10.75;
           this.position.copy(posicion);
           var tangente = this.curve.getTangentAt(origen.t);
           posicion.add(tangente);
           this.up + this.binormales[Math.floor(origen.t * this.segmentos)];
           this.lookAt(posicion);
         });
-        animacion.start();
-        animacion.repeat(3);
+
+        this.animacion.start();
+        this.animacion.repeat(3);
     }
 
     createLocomotor(){
@@ -62,14 +62,14 @@ class Train extends THREE.Object3D {
       var locomotorCSG = new CSG();
       locomotorCSG.union([cylinder, cy]);
 
-      const locomotor = locomotorCSG.toMesh();
+      this.locomotor = locomotorCSG.toMesh();
 
-      this.add(locomotor);
+      this.add(this.locomotor);
     }
-    /*
+    
     createCamara(){
         var material = new THREE.MeshNormalMaterial();
-        /* CAMARA DEL TREN 
+        // CAMARA DEL TREN 
         var boxgeom = new THREE.BoxGeometry(10,12,10);
 
         const box = new THREE.Mesh(boxgeom, material);
@@ -95,11 +95,11 @@ class Train extends THREE.Object3D {
         var camaraCSG = new CSG();
         camaraCSG.union([box, soporte, soporte2, techo]);
 
-        const camara = camaraCSG.toMesh();
+        this.camara = camaraCSG.toMesh();
 
-        this.add(camara);
+        this.add(this.camara);
     }
-    */
+    
     createBase(){
       var textureLoader = new THREE.TextureLoader();
       var acero = textureLoader.load('../../imgs/acero.jpg');
@@ -133,9 +133,9 @@ class Train extends THREE.Object3D {
       var baseCSG = new CSG();
       baseCSG.union([boxinf, boxinf2, boxsoport, boxsoport2]);
 
-      const base = baseCSG.toMesh();
+      this.base = baseCSG.toMesh();
 
-      this.add(base);
+      this.add(this.base);
 
 
     }
@@ -185,10 +185,10 @@ class Train extends THREE.Object3D {
       var ruedasCSG = new CSG();
       ruedasCSG.union([ruedaG1,ruedaG2, ruedaG3, ruedaG4, ruedaP1, ruedaP2]);
       
-      const ruedas = ruedasCSG.toMesh();
+      this.ruedas = ruedasCSG.toMesh();
       
 
-      this.add(ruedas);
+      this.add(this.ruedas);
 
     }
 
