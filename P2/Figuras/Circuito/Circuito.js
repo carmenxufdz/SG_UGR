@@ -35,6 +35,18 @@ class Circuito extends THREE.Object3D {
 
         var path = new THREE.CatmullRomCurve3 (pts, true)
 
+        //definicion de  spline
+        this.spline = new THREE.CatmullRomCurve3(pts)
+
+        //dibujado de un spline
+        // Se crea una geometría
+        var geometryLine = new THREE. BufferGeometry ( ) ;
+
+        geometryLine . setFromPoints ( this.spline.getPoints(100)) ;
+
+        var material = new THREE.LineBasicMaterial({material, linewidth: 1});
+        var visibleSpline = new THREE.Line (geometryLine, material);
+
         var resolucion = 200;
         var radio = 0.5;
         var segmentoCirculo = 20;
@@ -45,7 +57,8 @@ class Circuito extends THREE.Object3D {
 
         var geometriaTubo_MESH = new THREE.Mesh(geometriaTubo, material);
 
-        this.add(geometriaTubo_MESH);
+        //this.add(geometriaTubo_MESH);
+        this.add(visibleSpline);
                 
     }
 
@@ -76,6 +89,21 @@ class Circuito extends THREE.Object3D {
 
     update()
     {
+        this.segmentos = 100;
+        this.binormales = this.spline.computeFrenetFrames (this.segmentos, true).binormales;
+
+        var origen = {t : 0};
+        var fin = {t : 1};
+        var tiempoDeRecorrido = 4000;
+/*
+        var animacion = new TWEEN.Tween (origen).to (fin, tiempoDeRecorrido)
+        var posicion = this.spline.getPointAt (origen.t);
+        visibleSpline.position.copy (posicion);
+        var tangente = this.spline.getTangentAt (origen.t);
+        posicion.add (tangente);
+        visibleSpline.up = this.binormales[Math.floor(origen.t * this.segmentos)];
+        visibleSpline.lookAt (posicion);
+*/
     }
 }
 
