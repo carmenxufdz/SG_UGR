@@ -11,6 +11,11 @@ class Train extends THREE.Object3D {
           this.createBase();
           this.createRuedas();
 
+          this.train = [this.locomotor, this.camara, this.base, this.ruedas]
+          for(let i=0; i<this.train.length; i++)
+            this.train[i].position.y +=10;
+          this.rotacion = 0.01;
+
 
     }
 
@@ -32,9 +37,9 @@ class Train extends THREE.Object3D {
       var locomotorCSG = new CSG();
       locomotorCSG.union([cylinder, cy]);
 
-      const locomotor = locomotorCSG.toMesh();
+      this.locomotor = locomotorCSG.toMesh();
 
-      this.add(locomotor);
+      this.add(this.locomotor);
     }
 
     createCamara(){
@@ -65,9 +70,9 @@ class Train extends THREE.Object3D {
         var camaraCSG = new CSG();
         camaraCSG.union([box, soporte, soporte2, techo]);
 
-        const camara = camaraCSG.toMesh();
+        this.camara = camaraCSG.toMesh();
 
-        this.add(camara);
+        this.add(this.camara);
     }
 
     createBase(){
@@ -103,9 +108,9 @@ class Train extends THREE.Object3D {
       var baseCSG = new CSG();
       baseCSG.union([boxinf, boxinf2, boxsoport, boxsoport2]);
 
-      const base = baseCSG.toMesh();
+      this.base = baseCSG.toMesh();
 
-      this.add(base);
+      this.add(this.base);
 
 
     }
@@ -155,15 +160,18 @@ class Train extends THREE.Object3D {
       var ruedasCSG = new CSG();
       ruedasCSG.union([ruedaG1,ruedaG2, ruedaG3, ruedaG4, ruedaP1, ruedaP2]);
       
-      const ruedas = ruedasCSG.toMesh();
+      this.ruedas = ruedasCSG.toMesh();
       
 
-      this.add(ruedas);
+      this.add(this.ruedas);
 
     }
 
     update()
     {
+      this.rotacion += 0.01;
+
+      this.rotateZ(this.rotacion);
     }
 }
 

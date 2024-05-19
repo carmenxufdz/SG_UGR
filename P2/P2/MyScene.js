@@ -70,8 +70,8 @@ class MyScene extends THREE.Scene {
 
     this.createObjectsColisiones();
     this.objetosColisiones = [
-      this.coin, this.mushroom, this.wand, this.ring, this.goodpotion,
-      this.rayo, this.badmushroom, this.skull, this. apple, this.badpotion,
+      this.coin0, this.mushroom0, this.wand0, this.ring0, this.goodpotion0,
+      this.rayo0, this.badmushroom0, this.skull0, this. apple0, this.badpotion0,
     ];
 
     for(let i = 0; i<this.objetosColisiones.length; i++)
@@ -79,7 +79,8 @@ class MyScene extends THREE.Scene {
 
     this.createObjectsVoladores();
     this.objetosVoladores = [
-      this.book0, this.book1, this.book2, this.book3, this.book4, this.book5,
+      this.book0, this.book1, this.book2, this.book3, this.book4, 
+      this.book5, this.book6, this.book7, this.book8,
       this.snitch,
     ]
 
@@ -90,68 +91,70 @@ class MyScene extends THREE.Scene {
   }
 
   createObjectsColisiones(){
+
     // OBJETOS BUENOS //
-    this.coin = new Coin(this.gui, "Controles de la Figura");
-    this.coin.position.set(30,10.25, 22.5);
-
-    var boxCoin = new THREE.Box3();
-    boxCoin.setFromObject(this.coin);
-
-    this.mushroom = new Mushroom(this.gui, "Controles de la Figura");
-    this.mushroom.position.set(110, 16, 50);
-
-    var boxMushrrom = new THREE.Box3();
-    boxMushrrom.setFromObject(this.mushroom);
-
-    this.wand = new Wand(this.gui, "Controles de la Figura");
-    this.wand.position.set(22, 10, -100);
     
-    var boxWand = new THREE.Box3();
-    boxWand.setFromObject(this.wand);
+    this.coin0 = new Coin(this.gui, "Controles de la Figura");
+    this.coin0.position.set(30,10.25, 22.5);
 
-    this.ring = new Ring(this.gui, "Controles de la Figura");
-    this.ring.position.set(20, 10, 140);
-    
-    var boxRing = new THREE.Box3();
-    boxRing.setFromObject(this.ring);
+    var boxCoin0 = new THREE.Box3();
+    boxCoin0.setFromObject(this.coin0);
 
-    this.goodpotion = new GoodPotion(this.gui, "Controles de la Figura");
-    this.goodpotion.position.set(20, 10.5, 80);
+    this.mushroom0 = new Mushroom(this.gui, "Controles de la Figura");
+    this.mushroom0.position.set(110, 16, 50);
+
+    var boxMushrrom0 = new THREE.Box3();
+    boxMushrrom0.setFromObject(this.mushroom0);
+
+    this.wand0 = new Wand(this.gui, "Controles de la Figura");
+    this.wand0.position.set(22, 10, -100);
     
-    var boxGoodpotion = new THREE.Box3();
-    boxGoodpotion.setFromObject(this.goodpotion);
+    var boxWand0 = new THREE.Box3();
+    boxWand0.setFromObject(this.wand0);
+
+    this.ring0 = new Ring(this.gui, "Controles de la Figura");
+    this.ring0.position.set(20, 10, 140);
+    
+    var boxRing0 = new THREE.Box3();
+    boxRing0.setFromObject(this.ring0);
+
+    this.goodpotion0 = new GoodPotion(this.gui, "Controles de la Figura");
+    this.goodpotion0.position.set(20, 10.5, 80);
+    
+    var boxGoodpotion0 = new THREE.Box3();
+    boxGoodpotion0.setFromObject(this.goodpotion0);
 
     // OBJETOS MALOS //
 
-    this.rayo = new Rayo(this.gui, "Controles de la Figura");
-    this.rayo.position.set(127,10.25, -120);
+    this.rayo0 = new Rayo(this.gui, "Controles de la Figura");
+    this.rayo0.position.set(127,10.25, -120);
     
-    var boxRayo = new THREE.Box3();
-    boxRayo.setFromObject(this.rayo);
+    var boxRayo0 = new THREE.Box3();
+    boxRayo0.setFromObject(this.rayo0);
     
-    this.badmushroom = new BadMushroom(this.gui, "Controles de la Figura");
-    this.badmushroom.position.set(85,10, -20);
+    this.badmushroom0 = new BadMushroom(this.gui, "Controles de la Figura");
+    this.badmushroom0.position.set(85,10, -20);
 
-    var boxBadmushroom = new THREE.Box3();
-    boxBadmushroom.setFromObject(this.badmushroom);
+    var boxBadmushroom0 = new THREE.Box3();
+    boxBadmushroom0.setFromObject(this.badmushroom0);
 
-    this.skull = new Skull(this.gui, "Controles de la Figura");
-    this.skull.position.set(-5,9.5, -40);
+    this.skull0 = new Skull(this.gui, "Controles de la Figura");
+    this.skull0.position.set(-5,9.5, -40);
 
-    var boxSkull = new THREE.Box3();
-    boxSkull.setFromObject(this.skull);
+    var boxSkull0 = new THREE.Box3();
+    boxSkull0.setFromObject(this.skull0);
 
-    this.apple = new Apple(this.gui, "Controles de la Figura");
-    this.apple.position.set(90,10, 140);
+    this.apple0 = new Apple(this.gui, "Controles de la Figura");
+    this.apple0.position.set(90,10, 140);
 
-    var boaxApple = new THREE.Box3();
-    boaxApple.setFromObject(this.apple);
+    var boaxApple0 = new THREE.Box3();
+    boaxApple0.setFromObject(this.apple0);
 
-    this.badpotion = new BadPotion(this.gui, "Controles de la Figura");
-    this.badpotion.position.set(55,10.5, -90);
+    this.badpotion0 = new BadPotion(this.gui, "Controles de la Figura");
+    this.badpotion0.position.set(55,10.5, -90);
 
-    var boxBadpotion = new THREE.Box3();
-    boxBadpotion.setFromObject(this.badpotion);
+    var boxBadpotion0 = new THREE.Box3();
+    boxBadpotion0.setFromObject(this.badpotion0);
   }
 
   createObjectsVoladores(){
@@ -163,16 +166,25 @@ class MyScene extends THREE.Scene {
     this.book1.position.set(50, 15,140);
 
     this.book2 = new Book(this.gui, "Controles de la Figura")
-    this.book2.position.set(-10, 11, -35);
+    this.book2.position.set(-10, -20, -35);
 
     this.book3 = new Book(this.gui, "Controles de la Figura")
     this.book3.position.set(100, 25, 30);
 
     this.book4 = new Book(this.gui, "Controles de la Figura")
-    this.book4.position.set(140, 14, -60);
+    this.book4.position.set(140, -15, -60);
 
     this.book5 = new Book(this.gui, "Controles de la Figura")
     this.book5.position.set(45, 13, -110);
+
+    this.book6 = new Book(this.gui, "Controles de la Figura")
+    this.book6.position.set(70, -15, 80);
+
+    this.book7 = new Book(this.gui, "Controles de la Figura")
+    this.book7.position.set(140, 15, -120);
+
+    this.book8 = new Book(this.gui, "Controles de la Figura")
+    this.book8.position.set(20, -17, 150);
 
     this.snitch = new Snitch(this.gui, "Controles de la Figura");
   }
@@ -231,7 +243,7 @@ class MyScene extends THREE.Scene {
     this.cameratren = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.01, 1000);
 
     this.train.add (this.cameratren);
-    this.cameratren.position.set(0,0.1,0);
+    this.cameratren.position.set(0,110.1,0);
 
     var puntoDeMiraRelativo = new THREE.Vector3 (0,0,5);
 
@@ -402,14 +414,15 @@ class MyScene extends THREE.Scene {
 
     this.train.update();
 
-    if(this.izquierda && this.trenposicion < 5){
-      this.trenposicion +=0.1;
+    if(this.izquierda){
+      this.trenposicion -= 0.1;
     }
-    if(this.derecha &&  this.trenposicion > -5){
-      this.trenposicion -=0.1;
+    if(this.derecha){
+      this.trenposicion += 0.1;
+      
     }
 
-    this.train.translateX(this.trenposicion);
+    this.train.rotateZ(this.trenposicion);
 
     
     for(let i = 0; i<this.objetosVoladores.length; i++)

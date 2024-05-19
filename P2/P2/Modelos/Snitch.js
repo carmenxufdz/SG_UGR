@@ -125,8 +125,8 @@ class Snitch extends THREE.Object3D {
         if(this.timeSinceLastUpdate > this.time){
             
             // Generar números aleatorios dentro de los límites
-            const randomX = Math.random() * (150 - (-10)) + (-10);
-            const randomY = Math.random() * (40 - 10) + 10;
+            const randomX = Math.random() * (150 - (-140)) + (-140);
+            const randomY = Math.random() * (30 - (-15)) + (-15);
             const randomZ = Math.random() * (120 - (-120)) + (-120);
 
             // Actualizar la posición real de la Snitch

@@ -30,9 +30,12 @@ class Train extends THREE.Object3D {
         this.createRuedas();
         this.scale.set(0.1,0.1,0.1);
 
+        this.train = [this.locomotor, this.camara, this.base, this.ruedas]
+        for(let i=0; i<this.train.length; i++)
+          this.train[i].position.y +=110;
+
         this.animacion = new TWEEN.Tween(origen).to(fin, this.tiempoDeRecorrido).onUpdate(() =>{
           var posicion = this.curve.getPointAt(origen.t);
-          posicion.y+=10.75;
           this.position.copy(posicion);
           var tangente = this.curve.getTangentAt(origen.t);
           posicion.add(tangente);
@@ -66,10 +69,10 @@ class Train extends THREE.Object3D {
 
       this.add(this.locomotor);
     }
-    
+
     createCamara(){
         var material = new THREE.MeshNormalMaterial();
-        // CAMARA DEL TREN 
+        /* CAMARA DEL TREN */
         var boxgeom = new THREE.BoxGeometry(10,12,10);
 
         const box = new THREE.Mesh(boxgeom, material);
@@ -99,7 +102,7 @@ class Train extends THREE.Object3D {
 
         this.add(this.camara);
     }
-    
+
     createBase(){
       var textureLoader = new THREE.TextureLoader();
       var acero = textureLoader.load('../../imgs/acero.jpg');
@@ -139,7 +142,7 @@ class Train extends THREE.Object3D {
 
 
     }
-    
+
     createRuedas(){
       var textureLoader = new THREE.TextureLoader();
       var acero = textureLoader.load('../../imgs/acero.jpg');

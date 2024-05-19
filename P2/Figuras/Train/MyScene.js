@@ -50,6 +50,7 @@ class MyScene extends THREE.Scene {
     //this.add (jarra);
     //this.add (tuerca);
     this.add (this.train);
+
   }
   
   createCamera () {
@@ -195,6 +196,7 @@ class MyScene extends THREE.Scene {
     this.camera.updateProjectionMatrix();
   }
     
+  
   onWindowResize () {
     // Este método es llamado cada vez que el usuario modifica el tamapo de la ventana de la aplicación
     // Hay que actualizar el ratio de aspecto de la cámara
@@ -212,6 +214,7 @@ class MyScene extends THREE.Scene {
     this.cameraControl.update();
 
     this.train.update();
+
     
     // Este método debe ser llamado cada vez que queramos visualizar la escena de nuevo.
     // Literalmente le decimos al navegador: "La próxima vez que haya que refrescar la pantalla, llama al método que te indico".
@@ -229,6 +232,7 @@ $(function () {
 
   // Se añaden los listener de la aplicación. En este caso, el que va a comprobar cuándo se modifica el tamaño de la ventana de la aplicación.
   window.addEventListener ("resize", () => scene.onWindowResize());
+  
   
   // Que no se nos olvide, la primera visualización.
   scene.update();
