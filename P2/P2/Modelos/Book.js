@@ -1,4 +1,5 @@
 import * as THREE from '../../libs/three.module.js'
+import { CSG } from '../../libs/CSG-v2.js'
 
 class Book extends THREE.Object3D {
     constructor(gui, titleGui)
@@ -55,7 +56,7 @@ class Book extends THREE.Object3D {
         this.page2.rotateY(-30*Math.PI/180);
         this.page2.position.set(0.8,-0.1,0);
 
-
+        
         this.add(this.tapa);
         this.add(this.page1);
         this.add(this.tapa2);

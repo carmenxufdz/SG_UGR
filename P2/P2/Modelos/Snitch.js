@@ -57,6 +57,7 @@ class Snitch extends THREE.Object3D {
         this.wing1.position.set(1.9,1.2,0);
         this.wing2.position.set(-1.9,1.2,0);
 
+        
         this.add(this.wing1);
         this.add(this.wing2);
 

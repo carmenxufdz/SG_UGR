@@ -33,7 +33,6 @@ class MyScene extends THREE.Scene {
     super();
     
     this.general = true; // variable global para cambiar de camara
-    window.addEventListener('keydown', this.onKeyDown.bind(this), false);
 
     // Lo primero, crear el visualizador, pasándole el lienzo sobre el que realizar los renderizados.
     this.renderer = this.createRenderer(myCanvas);
@@ -75,15 +74,14 @@ class MyScene extends THREE.Scene {
     this.createObjectsColisiones();
 
     this.createObjectsVoladores();
+    
     this.objetosVoladores = [
       this.book0, this.book1, this.book2, this.book3, this.book4, 
       this.book5, this.book6, this.book7, this.book8,
       this.snitch,
     ]
-
-    for(let i = 0; i<this.objetosVoladores.length; i++)
-      this.add(this.objetosVoladores[i]);
     
+
   }
 
   createObjectsColisiones(){
@@ -209,36 +207,47 @@ class MyScene extends THREE.Scene {
 
     this.book0 = new Book(this.gui, "Controles de la Figura")
     this.book0.position.set(12, 12, 15);
+    this.add(this.book0);
 
-    this.book1 = new Book(this.gui, "Controles de la Figura")
+    this.book1 = new Book(this.gui, "Controles de la Figura") //primer libro
     this.book1.position.set(50, 15,140);
+    this.add(this.book1);
 
     this.book2 = new Book(this.gui, "Controles de la Figura")
     this.book2.position.set(-10, -20, -35);
     this.book2.rotateZ(180*Math.PI/180);
+    this.add(this.book2);
 
     this.book3 = new Book(this.gui, "Controles de la Figura")
     this.book3.position.set(100, 25, 30);
+    this.add(this.book3);
 
     this.book4 = new Book(this.gui, "Controles de la Figura")
     this.book4.position.set(140, -15, -60);
     this.book4.rotateZ(180*Math.PI/180);
+    this.add(this.book4);
 
     this.book5 = new Book(this.gui, "Controles de la Figura")
     this.book5.position.set(45, 13, -110);
+    this.add(this.book5);
 
     this.book6 = new Book(this.gui, "Controles de la Figura")
     this.book6.position.set(70, -15, 80);
     this.book6.rotateZ(180*Math.PI/180);
+    this.add(this.book6);
 
     this.book7 = new Book(this.gui, "Controles de la Figura")
     this.book7.position.set(140, 15, -120);
+    this.add(this.book7);
 
     this.book8 = new Book(this.gui, "Controles de la Figura")
     this.book8.position.set(20, -17, 150);
     this.book8.rotateZ(180*Math.PI/180);
+    this.add(this.book8);
 
     this.snitch = new Snitch(this.gui, "Controles de la Figura");
+    this.add(this.snitch);
+
   }
 
   colisiones(){
@@ -298,6 +307,62 @@ class MyScene extends THREE.Scene {
       this.general = !this.general;
     }
   }
+
+  onDocumentMouseDown(event) {
+    this.mouse = new THREE.Vector2();
+    this.raycaster = new THREE.Raycaster();
+
+    // Reutilizamos esos objetos, evitamos construirlos en cada pulsación
+    // Se obtiene la posición del clic
+
+    // en coordenadas de dispositivo normalizado
+    // - La esquina inferior izquierda tiene la coordenada (-1, -1)
+    // - La esquina superior derecha tiene la coordenada (1, 1)
+    this.mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+    this.mouse.y = 1 - 2 * (event.clientY / window.innerHeight);
+
+    // Se actualiza un rayo que parte de la cámara (el ojo del usuario)
+    // y que pasa por la posición donde se ha hecho clic
+    this.raycaster.setFromCamera(this.mouse, this.cameratren);
+
+    // Hay que buscar qué objetos intersecan con el rayo
+    // Es una operación costosa, solo se buscan intersecciones
+    // con los objetos que interesan en cada momento
+    // Las referencias de dichos objetos se guardan en un array
+    // pickableObjects vector de objetos donde se van a buscar intersecciones con el rayo
+    // pickedObjects vector donde se almacenan los Meshes intersecados por el rayo
+    // ordenado desde el más cercano a la cámara hasta el más lejano
+    
+    var pickedObjects = this.raycaster.intersectObjects(this.objetosVoladores, true);
+
+    // El parámetro true indica que se deben buscar intersecciones en los nodos del vector y sus descendientes
+    if (pickedObjects.length > 0) { // hay algún Mesh clicado
+      // Se puede referenciar el Mesh clicado
+      var selectedObject = pickedObjects[0].object;
+
+      // Mostrar por consola el objeto que se selecciona y el punto en el que se ha seleccionado
+      console.log('Objeto seleccionado:', selectedObject);
+      console.log('Punto de intersección:', pickedObjects[0].point);
+
+      
+      // Identificar cuál de los objetos de pickableObjects ha sido seleccionado MEDIANTE ID (NO FUNCIONA PORQ NO COINCIDEN)
+      for (let i = 0; i < this.objetosVoladores.length; i++) {
+        console.log('Comparando:', this.objetosVoladores[i], 'con', selectedObject);
+        if (this.objetosVoladores[i].uuid === selectedObject.parent.uuid) {
+            console.log('El objeto seleccionado es:', this.objetosVoladores[i]);
+            // Eliminar el objeto seleccionado de la escena
+            this.remove(this.objetosVoladores[i]);
+            // Eliminar el objeto de pickableObjects
+            this.objetosVoladores.splice(i, 1);
+            break;
+        }
+      }
+    }
+  }
+
+
+
+
 
   createCameraGeneral () {
     // Para crear una cámara le indicamos
@@ -499,6 +564,7 @@ class MyScene extends THREE.Scene {
 
     this.train.update();
 
+    
     for(let i = 0; i<this.objetosVoladores.length; i++)
       this.objetosVoladores[i].update();
     
@@ -536,6 +602,7 @@ $(function () {
   window.addEventListener ("resize", () => scene.onWindowResize());
   window.addEventListener ("keydown", (event) => scene.onKeyDown(event));  
   window.addEventListener ("keypress", (event) => scene.onKeyPress(event));
+  window.addEventListener ("mousedown", (event) => scene.onDocumentMouseDown(event));
   
   // Que no se nos olvide, la primera visualización.
   scene.update();
