@@ -69,7 +69,7 @@ class Snitch extends THREE.Object3D {
         this.scale.set(0.25,0.25,0.25);
 
         this.lasTimeUpdate = Date.now();
-        this.time = 3000;
+        this.time = 5000;
     }
 
     createShape(shape)
@@ -137,7 +137,7 @@ class Snitch extends THREE.Object3D {
 
             // Actualizar el tiempo de la última actualización
             this.lastUpdateTime = Date.now();
-            this.time +=3000;
+            this.time +=5000;
         }
     }
 }

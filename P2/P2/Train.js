@@ -9,7 +9,6 @@ class Train extends THREE.Object3D {
 
         this.path = []; // Initialize the path array
 
-
         // Create the path using the Circuito class
         const circuito = new Circuito(gui, titleGui);
         this.path = circuito.getRuta();
