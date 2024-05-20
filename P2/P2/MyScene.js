@@ -32,7 +32,10 @@ class MyScene extends THREE.Scene {
   constructor (myCanvas) { 
     super();
     
-    this.general = true; // variable global para cambiar de camara
+    // variable global para cambiar de camara
+    this.general = true; 
+    this.tercera= false;
+    this.primera = false;
 
     // Lo primero, crear el visualizador, pasándole el lienzo sobre el que realizar los renderizados.
     this.renderer = this.createRenderer(myCanvas);
@@ -70,6 +73,7 @@ class MyScene extends THREE.Scene {
     this.add(boxTrainVisible);
 
     this.createCameraTerceraPersona();
+    this.createCameraPrimeraPersona();
 
     this.createObjectsColisiones();
 
@@ -304,7 +308,18 @@ class MyScene extends THREE.Scene {
 
   onKeyPress = function (event){
     if (event.keyCode === 32) { // 32 es el código de la tecla de la barra espaciadora
-      this.general = !this.general;
+      if (this.general){
+         this.general = !this.general;
+         this.tercera  = !this.tercera;
+      }
+      else if (this.tercera){
+        this.tercera = !this.tercera;
+        this.primera  = !this.primera;
+      }
+      else if(this.primera){
+        this.primera = !this.primera;
+        this.general  = !this.general;
+      }
     }
   }
 
@@ -360,10 +375,6 @@ class MyScene extends THREE.Scene {
     }
   }
 
-
-
-
-
   createCameraGeneral () {
     // Para crear una cámara le indicamos
     //   El ángulo del campo de visión vértical en grados sexagesimales
@@ -389,6 +400,23 @@ class MyScene extends THREE.Scene {
   }
 
   createCameraTerceraPersona () { //camara subjetiva
+
+    this.cameratercerapers = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.01, 1000);
+
+    this.train.add (this.cameratercerapers);
+    this.cameratercerapers.position.set(0,125,-100);
+
+    var puntoDeMiraRelativo = new THREE.Vector3 (0,0,2.5);
+
+    var target = new THREE.Vector3();
+    this.cameratercerapers.getWorldPosition(target);
+    target.add(puntoDeMiraRelativo);
+
+    this.cameratercerapers.lookAt(target);
+  }
+
+  
+  createCameraPrimeraPersona () { //camara subjetiva
 
     this.cameratren = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.01, 1000);
 
@@ -515,7 +543,9 @@ class MyScene extends THREE.Scene {
     // Si hubiera varias cámaras, este método decidiría qué cámara devuelve cada vez que es consultado
     if (this.general == true)
       return this.camerageneral;
-    else
+    else if (this.tercera == true)
+      return this.cameratercerapers;
+    else (this.primera == true)
       return this.cameratren;
   }
   
@@ -527,11 +557,17 @@ class MyScene extends THREE.Scene {
     // Y si se cambia ese dato hay que actualizar la matriz de proyección de la cámara
       this.camerageneral.updateProjectionMatrix();
     }
-    else{
+    if (this.tercera == true){
+      this.cameratercerapers.aspect = ratio;
+    // Y si se cambia ese dato hay que actualizar la matriz de proyección de la cámara
+      this.cameratercerapers.updateProjectionMatrix();
+    }
+    if (this.primera == true){
       this.cameratren.aspect = ratio;
-      // Y si se cambia ese dato hay que actualizar la matriz de proyección de la cámara
+    // Y si se cambia ese dato hay que actualizar la matriz de proyección de la cámara
       this.cameratren.updateProjectionMatrix();
     }
+
   }
     
   onWindowResize () {
@@ -542,12 +578,16 @@ class MyScene extends THREE.Scene {
       var nuevaRatio = window.innerWidth / window.innerHeight;
       camara.aspect = nuevaRatio;
     }
-    else{
+    if (this.tercera == true){
+      var camara = this.cameratercerapers;
+      var nuevaRatio = window.innerWidth / window.innerHeight;
+      camara.aspect = nuevaRatio;
+    }
+    if (this.primera == true){
       var camara = this.cameratren;
       var nuevaRatio = window.innerWidth / window.innerHeight;
       camara.aspect = nuevaRatio;
     }
-
     camara.updateProjectionMatrix();
     this.renderer.setSize (window.innerWidth, window.innerHeight);
   }
