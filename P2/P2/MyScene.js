@@ -80,6 +80,8 @@ class MyScene extends THREE.Scene {
       this.book5, this.book6, this.book7, this.book8,
       this.snitch,
     ]
+
+    this.puntos = 0.0;
     
 
   }
