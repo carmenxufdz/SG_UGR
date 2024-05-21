@@ -56,8 +56,8 @@ class MyScene extends THREE.Scene {
     this.doblarPuntos = false;
     this.mitadPuntos = false;
     
-    this.time = Date.now();
-    
+    this.time;
+    this.timeContador;
     
     // Se crea la interfaz gráfica de usuario
     this.gui = this.createGUI ();
@@ -303,38 +303,43 @@ class MyScene extends THREE.Scene {
       this.doblarPuntos = true;
     }
 
-    if(this.boxTrain.intersectsBox(this.boxRayo0) && !this.rayo0.removed){
-      this.rayo0.removed = true;
-      this.remove(this.boxRayo0);
-      this.remove(this.rayo0);
-      this.reduccionV = true;
-    }
+    // OBJETOS MALOS
 
-    if(this.boxTrain.intersectsBox(this.boxBadmushroom0) && !this.badmushroom0.removed){
-      this.badmushroom0.removed = true;
-      this.remove(this.boxBadmushroom0);
-      this.remove(this.badmushroom0);
-      this.train.velocidad -= 0.01;
-    }
-
-    if(this.boxTrain.intersectsBox(this.boxSkull0) && !this.skull0.removed){
-      this.skull0.removed = true;
-      this.remove(this.boxSkull0);
-      this.remove(this.skull0);
-    }
-
-    if(this.boxTrain.intersectsBox(this.boaxApple0) && !this.apple0.removed){
-      this.apple0.removed = true;
-      this.remove(this.boaxApple0);
-      this.remove(this.apple0);
-      this.puntos/=2;
-    }
-
-    if(this.boxTrain.intersectsBox(this.boxBadpotion0) && !this.badpotion0.removed){
-      this.badpotion0.removed = true;
-      this.remove(this.boxBadpotion0);
-      this.remove(this.badpotion0);
-      this.mitadPuntos = true;
+    if(!this.invencible){
+      
+      if(this.boxTrain.intersectsBox(this.boxRayo0) && !this.rayo0.removed){
+        this.rayo0.removed = true;
+        this.remove(this.boxRayo0);
+        this.remove(this.rayo0);
+        this.reduccionV = true;
+      }
+  
+      if(this.boxTrain.intersectsBox(this.boxBadmushroom0) && !this.badmushroom0.removed){
+        this.badmushroom0.removed = true;
+        this.remove(this.boxBadmushroom0);
+        this.remove(this.badmushroom0);
+        this.train.velocidad -= 0.01;
+      }
+  
+      if(this.boxTrain.intersectsBox(this.boxSkull0) && !this.skull0.removed){
+        this.skull0.removed = true;
+        this.remove(this.boxSkull0);
+        this.remove(this.skull0);
+      }
+  
+      if(this.boxTrain.intersectsBox(this.boaxApple0) && !this.apple0.removed){
+        this.apple0.removed = true;
+        this.remove(this.boaxApple0);
+        this.remove(this.apple0);
+        this.puntos/=2;
+      }
+  
+      if(this.boxTrain.intersectsBox(this.boxBadpotion0) && !this.badpotion0.removed){
+        this.badpotion0.removed = true;
+        this.remove(this.boxBadpotion0);
+        this.remove(this.badpotion0);
+        this.mitadPuntos = true;
+      }
     }
   }
 
@@ -409,7 +414,14 @@ class MyScene extends THREE.Scene {
             console.log('El objeto seleccionado es:', this.objetosVoladores[i]);
             // Eliminar el objeto seleccionado de la escena
             this.remove(this.objetosVoladores[i]);
-            this.puntos +=50;
+            if(this.mitadPuntos){
+              this.puntos += 25;
+            }
+            else if(this.doblarPuntos){
+              this.puntos += 100;
+            }
+            else
+              this.puntos +=50;
             // Eliminar el objeto de pickableObjects
             this.objetosVoladores.splice(i, 1);
             break;
@@ -674,18 +686,13 @@ class MyScene extends THREE.Scene {
 
     this.boxTrain.setFromObject(this.train);
 
-    if(!this.invencible){
-      this.colisiones();
+    if(this.invencible){
     }
 
 
-    if(this.train.t==1){
-      var tiempoTranscurrido = this.reloj.getDelta();
-      this.puntosTotales += 1000/tiempoTranscurrido;
-    }
 
-    this.puntosTotales = this.puntos;
-    this.setMessagePoints(this.puntosTotales);
+
+    this.setMessagePoints(this.puntos);
     this.setMessage(this.train.velocidad);
     // Este método debe ser llamado cada vez que queramos visualizar la escena de nuevo.
     // Literalmente le decimos al navegador: "La próxima vez que haya que refrescar la pantalla, llama al método que te indico".
