@@ -6,6 +6,8 @@ class Mushroom extends THREE.Object3D {
     {
         super();
 
+        this.removed = false;
+        
         // Se crea la parte de la interfaz que corresponde a la caja
         // Se crea primero porque otros métodos usan las variables que se definen para la interfaz
         //this.createGUI(gui,titleGui);

@@ -7,6 +7,8 @@ class BadPotion extends THREE.Object3D {
     {
         super();
 
+        this.removed = false;
+        
         var textureLoader = new THREE.TextureLoader();
         var texture = textureLoader.load('../../imgs/corcho.jpg');
 

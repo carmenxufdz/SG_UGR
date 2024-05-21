@@ -4,6 +4,8 @@ class Ring extends THREE.Object3D {
     constructor(gui, titleGui)
     {
         super();
+        
+        this.removed = false;
 
         var ringMat = new THREE.MeshPhongMaterial({color: 0xe6be08});
         var diamondMat = new THREE.MeshPhongMaterial({color: 0x11e1e1});

@@ -5,6 +5,8 @@ class Apple extends THREE.Object3D {
     constructor(gui, titleGui)
     {
         super();
+
+        this.removed = false;
         
         var raboMat = new THREE.MeshPhongMaterial({color: 0x4a804d});
         var manzanaMat = new THREE.MeshPhongMaterial({color: 0xb42c1c});

@@ -6,6 +6,8 @@ class Skull extends THREE.Object3D {
     {
         super();
 
+        this.removed = false;
+
         var shape = new THREE.Shape();
         this.createShape(shape);
 

@@ -269,59 +269,69 @@ class MyScene extends THREE.Scene {
   }
 
   colisiones(){
-    if(this.boxTrain.intersectsBox(this.boxCoin0)){
+    if(this.boxTrain.intersectsBox(this.boxCoin0) && !this.coin0.removed){
+      this.coin0.removed = true;
       this.remove(this.boxCoin0);
       this.remove(this.coin0);
     }
 
-    if(this.boxTrain.intersectsBox(this.boxMushrrom0)){
+    if(this.boxTrain.intersectsBox(this.boxMushrrom0) && !this.mushroom0.removed){
+      this.mushroom0.removed = true;
       this.remove(this.boxMushrrom0);
       this.remove(this.mushroom0);
       this.train.velocidad += 0.01;
     }
 
-    if(this.boxTrain.intersectsBox(this.boxWand0)){
+    if(this.boxTrain.intersectsBox(this.boxWand0) && !this.wand0.removed){
+      this.wand0.removed = true;
       this.invencible = true;
       this.remove(this.boxWand0);
       this.remove(this.wand0);
     }
 
-    if(this.boxTrain.intersectsBox(this.boxRing0)){
+    if(this.boxTrain.intersectsBox(this.boxRing0) && !this.ring0.removed){
+      this.ring0.removed = true;
       this.remove(this.boxRing0);
       this.remove(this.ring0);
       this.puntos*=2;
     }
 
-    if(this.boxTrain.intersectsBox(this.boxGoodpotion0)){
+    if(this.boxTrain.intersectsBox(this.boxGoodpotion0) && !this.goodpotion0.removed){
+      this.goodpotion0.removed = true;
       this.remove(this.boxGoodpotion0);
       this.remove(this.goodpotion0);
       this.doblarPuntos = true;
     }
 
-    if(this.boxTrain.intersectsBox(this.boxRayo0)){
+    if(this.boxTrain.intersectsBox(this.boxRayo0) && !this.rayo0.removed){
+      this.rayo0.removed = true;
       this.remove(this.boxRayo0);
       this.remove(this.rayo0);
       this.reduccionV = true;
     }
 
-    if(this.boxTrain.intersectsBox(this.boxBadmushroom0)){
+    if(this.boxTrain.intersectsBox(this.boxBadmushroom0) && !this.badmushroom0.removed){
+      this.badmushroom0.removed = true;
       this.remove(this.boxBadmushroom0);
       this.remove(this.badmushroom0);
       this.train.velocidad -= 0.01;
     }
 
-    if(this.boxTrain.intersectsBox(this.boxSkull0)){
+    if(this.boxTrain.intersectsBox(this.boxSkull0) && !this.skull0.removed){
+      this.skull0.removed = true;
       this.remove(this.boxSkull0);
       this.remove(this.skull0);
     }
 
-    if(this.boxTrain.intersectsBox(this.boaxApple0)){
+    if(this.boxTrain.intersectsBox(this.boaxApple0) && !this.apple0.removed){
+      this.apple0.removed = true;
       this.remove(this.boaxApple0);
       this.remove(this.apple0);
       this.puntos/=2;
     }
 
-    if(this.boxTrain.intersectsBox(this.boxBadpotion0)){
+    if(this.boxTrain.intersectsBox(this.boxBadpotion0) && !this.badpotion0.removed){
+      this.badpotion0.removed = true;
       this.remove(this.boxBadpotion0);
       this.remove(this.badpotion0);
       this.mitadPuntos = true;
