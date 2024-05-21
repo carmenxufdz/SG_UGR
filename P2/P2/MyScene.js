@@ -47,7 +47,8 @@ class MyScene extends THREE.Scene {
 
     this.trenrotacion = 0;
 
-    this.puntosTotales = 0.0;
+    this.puntosLibros = 50;
+    this.puntosSnitch = 500;
     this.puntos = 0.0
 
     this.invencible = false;
@@ -55,6 +56,8 @@ class MyScene extends THREE.Scene {
     this.reduccionV = false;
     this.doblarPuntos = false;
     this.mitadPuntos = false;
+
+    this.velocidad = 0.005;
     
     this.time;
     this.timeContador;
@@ -273,18 +276,26 @@ class MyScene extends THREE.Scene {
       this.coin0.removed = true;
       this.remove(this.boxCoin0);
       this.remove(this.coin0);
+
+      this.time = Date.now();
+      this.timeContador = Date.now() - this.time;
+      this.aumentoV = true;
+      this.train.velocidad += this.velocidad;
     }
 
     if(this.boxTrain.intersectsBox(this.boxMushrrom0) && !this.mushroom0.removed){
       this.mushroom0.removed = true;
       this.remove(this.boxMushrrom0);
       this.remove(this.mushroom0);
-      this.train.velocidad += 0.01;
+      this.train.velocidad += this.velocidad;
     }
 
     if(this.boxTrain.intersectsBox(this.boxWand0) && !this.wand0.removed){
       this.wand0.removed = true;
       this.invencible = true;
+      this.time = Date.now();
+      this.timeContador = Date.now() - this.time;
+
       this.remove(this.boxWand0);
       this.remove(this.wand0);
     }
@@ -300,25 +311,32 @@ class MyScene extends THREE.Scene {
       this.goodpotion0.removed = true;
       this.remove(this.boxGoodpotion0);
       this.remove(this.goodpotion0);
+
+      this.time = Date.now();
+      this.timeContador = Date.now() - this.time;
       this.doblarPuntos = true;
     }
 
     // OBJETOS MALOS
 
     if(!this.invencible){
-      
+
       if(this.boxTrain.intersectsBox(this.boxRayo0) && !this.rayo0.removed){
         this.rayo0.removed = true;
         this.remove(this.boxRayo0);
         this.remove(this.rayo0);
+          
+        this.time = Date.now();
+        this.timeContador = Date.now() - this.time;
         this.reduccionV = true;
+        this.train.velocidad -= this.velocidad;
       }
   
       if(this.boxTrain.intersectsBox(this.boxBadmushroom0) && !this.badmushroom0.removed){
         this.badmushroom0.removed = true;
         this.remove(this.boxBadmushroom0);
         this.remove(this.badmushroom0);
-        this.train.velocidad -= 0.01;
+        this.train.velocidad -= this.velocidad;
       }
   
       if(this.boxTrain.intersectsBox(this.boxSkull0) && !this.skull0.removed){
@@ -338,6 +356,10 @@ class MyScene extends THREE.Scene {
         this.badpotion0.removed = true;
         this.remove(this.boxBadpotion0);
         this.remove(this.badpotion0);
+
+          
+        this.time = Date.now();
+        this.timeContador = Date.now() - this.time;
         this.mitadPuntos = true;
       }
     }
@@ -414,24 +436,22 @@ class MyScene extends THREE.Scene {
             console.log('El objeto seleccionado es:', this.objetosVoladores[i]);
             // Eliminar el objeto seleccionado de la escena
             this.remove(this.objetosVoladores[i]);
+
+            // PUNTOS LIBROS
             if(this.mitadPuntos){
-              this.puntos += 25;
+              this.puntos += this.puntosLibros/2;
             }
             else if(this.doblarPuntos){
-              this.puntos += 100;
+              this.puntos += this.puntosLibros*2;
             }
             else
-              this.puntos +=50;
+              this.puntos += this.puntosLibros;
             // Eliminar el objeto de pickableObjects
             this.objetosVoladores.splice(i, 1);
             break;
         }
       }
     }
-  }
-
-  setMessage(str) {
-    document.getElementById("Messages").innerHTML = "<h2>" + str + "</h2>";
   }
 
   setMessagePoints(str) {
@@ -686,14 +706,48 @@ class MyScene extends THREE.Scene {
 
     this.boxTrain.setFromObject(this.train);
 
-    if(this.invencible){
+    this.colisiones();
+
+    if(this.invencible && this.timeContador < 10000){
+      this.timeContador = Date.now() - this.time;
+    }
+    else{
+      this.invencible = false;
+    }
+  
+    if(this.mitadPuntos && this.timeContador < 10000){
+      this.timeContador = Date.now() - this.time;
+    }
+    else{
+      this.mitadPuntos = false;
+    }
+
+    if(this.doblarPuntos && this.timeContador < 10000){
+      this.timeContador = Date.now() - this.time;
+    }
+    else{
+      this.doblarPuntos = false;
     }
 
 
+    if(this.aumentoV && this.timeContador < 10000){
+      this.timeContador = Date.now() - this.time;
+    }
+    else if(this.aumentoV && this.timeContador > 10000){
+      this.aumentoV = false;
+      this.train.velocidad -= this.velocidad;
+    }
 
+
+    if(this.reduccionV && this.timeContador < 10000){
+      this.timeContador = Date.now() - this.time;
+    }
+    else if(this.reduccionV && this.timeContador > 10000){
+      this.reduccionV = false;
+      this.train.velocidad += this.velocidad;
+    }
 
     this.setMessagePoints(this.puntos);
-    this.setMessage(this.train.velocidad);
     // Este método debe ser llamado cada vez que queramos visualizar la escena de nuevo.
     // Literalmente le decimos al navegador: "La próxima vez que haya que refrescar la pantalla, llama al método que te indico".
     // Si no existiera esta línea,  update()  se ejecutaría solo la primera vez.
