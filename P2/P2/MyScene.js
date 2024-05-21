@@ -44,6 +44,13 @@ class MyScene extends THREE.Scene {
     this.derecha = false;
 
     this.trenrotacion = 0;
+
+    this.puntos = 0.0;
+
+    this.invencible = false;
+    
+    this.time = Date.now();
+    
     
     // Se crea la interfaz gráfica de usuario
     this.gui = this.createGUI ();
@@ -84,8 +91,6 @@ class MyScene extends THREE.Scene {
       this.book5, this.book6, this.book7, this.book8,
       this.snitch,
     ]
-
-    this.puntos = 0.0;
     
 
   }
@@ -266,6 +271,7 @@ class MyScene extends THREE.Scene {
     }
 
     if(this.boxTrain.intersectsBox(this.boxWand0)){
+      this.invencible = true;
       this.remove(this.wand0);
     }
 
@@ -340,7 +346,7 @@ class MyScene extends THREE.Scene {
 
     // Se actualiza un rayo que parte de la cámara (el ojo del usuario)
     // y que pasa por la posición donde se ha hecho clic
-    this.raycaster.setFromCamera(this.mouse, this.cameratren);
+    this.raycaster.setFromCamera(this.mouse, this.cameratercerapers);
 
     // Hay que buscar qué objetos intersecan con el rayo
     // Es una operación costosa, solo se buscan intersecciones
@@ -624,7 +630,10 @@ class MyScene extends THREE.Scene {
 
     this.boxTrain.setFromObject(this.train);
 
-    this.colisiones();
+    if(!this.invencible){
+      this.colisiones();
+    }
+
     // Este método debe ser llamado cada vez que queramos visualizar la escena de nuevo.
     // Literalmente le decimos al navegador: "La próxima vez que haya que refrescar la pantalla, llama al método que te indico".
     // Si no existiera esta línea,  update()  se ejecutaría solo la primera vez.

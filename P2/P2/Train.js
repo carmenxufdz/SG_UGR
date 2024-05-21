@@ -12,6 +12,8 @@ class Train extends THREE.Object3D {
         // Create the path using the Circuito class
         const circuito = new Circuito(gui, titleGui);
         this.path = circuito.getRuta();
+
+        this.t = 0;
         
         // Create the CatmullRomCurve3 object
         this.curve = new THREE.CatmullRomCurve3(this.path);
@@ -19,9 +21,6 @@ class Train extends THREE.Object3D {
         this.tiempoDeRecorrido = 50000; // Initialize the animation speed (in milliseconds)
         this.segmentos = 100; // Initialize the number of segments
         this.binormales = this.curve.computeFrenetFrames(this.segmentos, true).binormals; // Initialize the binormals array      
-
-        var origen = {t:0};
-        var fin = {t:1};
 
         this.createLocomotor();
         this.createCamara();
@@ -33,17 +32,9 @@ class Train extends THREE.Object3D {
         for(let i=0; i<this.train.length; i++)
           this.train[i].position.y +=110;
 
-        this.animacion = new TWEEN.Tween(origen).to(fin, this.tiempoDeRecorrido).onUpdate(() =>{
-          var posicion = this.curve.getPointAt(origen.t);
-          this.position.copy(posicion);
-          var tangente = this.curve.getTangentAt(origen.t);
-          posicion.add(tangente);
-          this.up + this.binormales[Math.floor(origen.t * this.segmentos)];
-          this.lookAt(posicion);
-        });
-
-        this.animacion.start();
-        this.animacion.repeat(3);
+        this.reloj = new THREE.Clock();
+        this.velocidad = 0.01;
+        
     }
 
     createLocomotor(){
@@ -194,10 +185,22 @@ class Train extends THREE.Object3D {
 
     }
 
-
     update() {
-      TWEEN.update();
+      //TWEEN.update();
+      var tiempoTranscurrido = this.reloj.getDelta();
+      this.t += this.velocidad * tiempoTranscurrido;
+      if(this.t>1){
+        this.t = 0;
+      }
+      var posicion = this.curve.getPointAt(this.t);
+      this.position.copy(posicion);
+      var tangente = this.curve.getTangentAt(this.t);
+      posicion.add(tangente);
+      this.up + this.binormales[Math.floor(this.t * this.segmentos)];
+      this.lookAt(posicion);
     }
+
+
 }
 
 export { Train };
