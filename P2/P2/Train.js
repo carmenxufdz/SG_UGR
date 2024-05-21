@@ -191,6 +191,7 @@ class Train extends THREE.Object3D {
       this.t += this.velocidad * tiempoTranscurrido;
       if(this.t>1){
         this.t = 0;
+        this.velocidad+=0.01;
       }
       var posicion = this.curve.getPointAt(this.t);
       this.position.copy(posicion);
