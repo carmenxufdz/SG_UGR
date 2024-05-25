@@ -1,10 +1,22 @@
-import * as THREE from '../libs/three.module.js'
+import { color } from '../../libs/dat.gui.module.js';
+import * as THREE from '../../libs/three.module.js'
 
 class Circuito extends THREE.Object3D {
     constructor(gui,titleGui) {
         super();
+
         
-        var material = new THREE.MeshNormalMaterial()
+        var textureLoader = new THREE.TextureLoader();
+        var bumpTexture = textureLoader.load('../imgs/luna.jpg');
+        bumpTexture.repeat.set(20,1);
+        bumpTexture.wrapS = THREE.RepeatWrapping;
+
+
+        var material = new THREE.MeshStandardMaterial({
+            color: 0x000000,
+            bumpMap: bumpTexture,
+            bumpScale: 1,
+        })
 
         //CREAMOS EL TUBO
         
@@ -37,12 +49,9 @@ class Circuito extends THREE.Object3D {
 
         var geometriaTubo = new THREE.TubeGeometry(path, resolucion, radio, segmentoCirculo, true);
 
-        //geometriaTubo.rotateZ(45*Math.PI/180);
 
         var geometriaTubo_MESH = new THREE.Mesh(geometriaTubo, material);
 
-        //geometriaTubo_MESH.scale.set(20,20,20);
-        //geometriaTubo_MESH.rotateX(90*Math.PI/180);
         this.add(geometriaTubo_MESH);
                 
     }

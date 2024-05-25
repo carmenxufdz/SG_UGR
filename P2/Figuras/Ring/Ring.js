@@ -5,8 +5,16 @@ class Ring extends THREE.Object3D {
     {
         super();
 
-        var ringMat = new THREE.MeshPhongMaterial({color: 0xe6be08});
-        var diamondMat = new THREE.MeshPhongMaterial({color: 0x11e1e1});
+        var ringMat = new THREE.MeshStandardMaterial({
+            color: 0xe6be08,
+            roughness: 0.1,
+            metalness: 0.6,
+        });
+        var diamondMat = new THREE.MeshStandardMaterial({
+            color: 0x11e1e1,
+            roughness: 0.1,
+            metalness: 0.4,
+        });
 
         var diamond= [];
 

@@ -8,7 +8,10 @@ class Snitch extends THREE.Object3D {
 
         this.translate = 0.0;
         this.rotacionW = 0.0;
+        this.subeW = true;
+
         this.sube = true;
+        this.subir = 0.0;
         
         this.aux = 0.0;
         
@@ -20,7 +23,19 @@ class Snitch extends THREE.Object3D {
             clearcoatRoughness: 0.05 // Set the clearcoat roughness to a low value
         });
 
-        var material = new THREE.MeshNormalMaterial();
+        var material = new THREE.MeshStandardMaterial({
+            color: 0xC0F3FF, // Light pink color
+            metalness: 0.1, // Set the metalness to a low value
+            roughness: 0.5, // Set the roughness to a medium value
+            transparent: true, // Make the material transparent
+            opacity: 0.8, // Set the opacity to 0.8
+            transmission: 0.6, // Set the transmission to a high value
+            side: THREE.DoubleSide, // Render the material on both sides of the face
+            // Add an emission map for a glowing effect
+            emissive: 0xFFFFFF,
+            emissiveIntensity: 0.5,
+            emissiveMap: new THREE.TextureLoader().load('path/to/emission/map.png')
+        });
 
         var spheregeom = new THREE.SphereGeometry(2, 30, 30);
 
@@ -78,15 +93,15 @@ class Snitch extends THREE.Object3D {
     update()
     {
         
-        if(this.sube == true){
+        if(this.subeW == true){
             this.translate=0.01;
             if(this.aux >0.1)
-                this.sube = false;
+                this.subeW = false;
         }
         else{
             this.translate=-0.01;
             if(this.aux <-0.1)
-                this.sube = true;
+                this.subeW = true;
         }
 
         this.aux += this.translate;
@@ -97,6 +112,19 @@ class Snitch extends THREE.Object3D {
         this.rotacionW+=0.0001;
         this.wing1.rotateX(this.rotacionW);
         this.wing2.rotateX(-this.rotacionW);
+
+        if(this.sube && this.subir <=2.0){
+            this.subir+=0.1;
+            this.position.y+=0.1;
+            if(this.subir >=2.0)
+                this.sube = false;
+        }
+        else if(!this.sube && this.subir >= -2.0){
+            this.subir-=0.1;
+            this.position.y-=0.1;
+            if(this.subir <= -2.0)
+                this.sube = true;
+        }
 
 
         

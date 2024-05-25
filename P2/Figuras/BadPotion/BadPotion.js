@@ -28,8 +28,6 @@ class BadPotion extends THREE.Object3D {
             envMapIntensity: 1
           });
 
-        var material = new THREE.MeshNormalMaterial();
-
         var liquidmaterial = new THREE.MeshPhysicalMaterial({
             color: 0x007703,
             transmission: 1, // Transparency value

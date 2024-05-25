@@ -9,13 +9,21 @@ class Coin extends THREE.Object3D {
         var shape = new THREE.Shape();
         this.createShape(shape);
 
+        var textureLoader = new THREE.TextureLoader();
+        var texture = textureLoader.load('../../imgs/metal.jpg');
+
         this.settings = {
             steps: 10, // — int. Number of points used for subdividing segments along the depth of the extruded spline
             depth: 0.1, // — float. Depth to extrude the shape
         };
 
         var stargeom = new THREE.ExtrudeGeometry(shape, this.settings);
-        var material = new THREE.MeshPhysicalMaterial( { color: 0xffff00 } ); // amarillo
+        var material = new THREE.MeshStandardMaterial( { 
+            color: 0xffff00, 
+            roughness: 0.25,
+            metalness: 0.5,
+            map: texture 
+        } ); // amarillo
 
         this.star = new THREE.Mesh(stargeom, material);
         this.star.scale.set(0.15,0.15,1);

@@ -20,7 +20,15 @@ class Train extends THREE.Object3D {
     }
 
     createLocomotor(){
-      var material = new THREE.MeshNormalMaterial();
+      var textureLoader = new THREE.TextureLoader();
+      var texture = textureLoader.load('../../imgs/pintura.jpg');
+
+      var material = new THREE.MeshStandardMaterial({
+        color: 0x830000,
+        roughness: 0.1,
+        metalness: 0.6,
+        map: texture
+      });
 
       /* LOCOMOTOR */
       var cylindergeom = new THREE.CylinderGeometry(5, 5, 17.5, 30);
@@ -43,7 +51,16 @@ class Train extends THREE.Object3D {
     }
 
     createCamara(){
-        var material = new THREE.MeshNormalMaterial();
+      
+      var textureLoader = new THREE.TextureLoader();
+      var texture = textureLoader.load('../../imgs/pintura.jpg');
+
+        var material = new THREE.MeshStandardMaterial({
+          color: 0x830000,
+          roughness: 0.1,
+          metalness: 0.6,
+          map: texture
+        });
         /* CAMARA DEL TREN */
         var boxgeom = new THREE.BoxGeometry(10,12,10);
 
@@ -80,13 +97,11 @@ class Train extends THREE.Object3D {
       var acero = textureLoader.load('../../imgs/acero.jpg');
 
       const aceromaterial = new THREE.MeshStandardMaterial({
-        color: 0xffffff, // Base color of the wheel
+        color: 0x111111, // Base color of the wheel
         roughness: 0.5, // Add some roughness to give it a worn look
         metalness: 0.2, // Add some metalness to give it a slight shine
-        map: acero,
-        normalMap: acero, // Use the same texture as a normal map
-        roughnessMap: acero, // Use the same texture as a roughness map
-
+        bumpMap: acero,
+        bumpScale: 0.5,
         aoMapIntensity: 0.5,
         envMapIntensity: 0.5
       });
@@ -120,13 +135,11 @@ class Train extends THREE.Object3D {
       var acero = textureLoader.load('../../imgs/acero.jpg');
 
       const aceromaterial = new THREE.MeshStandardMaterial({
-        color: 0xffffff, // Base color of the wheel
+        color: 0x111111, // Base color of the wheel
         roughness: 0.5, // Add some roughness to give it a worn look
         metalness: 0.2, // Add some metalness to give it a slight shine
-        map: acero,
-        normalMap: acero, // Use the same texture as a normal map
-        roughnessMap: acero, // Use the same texture as a roughness map
-
+        bumpMap: acero,
+        bumpScale: 0.5,
         aoMapIntensity: 0.5,
         envMapIntensity: 0.5
       });
@@ -169,9 +182,6 @@ class Train extends THREE.Object3D {
 
     update()
     {
-      this.rotacion += 0.01;
-
-      this.rotateZ(this.rotacion);
     }
 }
 
