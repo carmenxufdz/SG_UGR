@@ -647,9 +647,6 @@ class MyScene extends THREE.Scene {
 
     this.trainLight.target = this.train;
 
-    
-    var light = new THREE.SpotLightHelper(this.trainLight, 0xffffff);
-    this.add(light);
 
   }
   setLightIntensity (valor) {
