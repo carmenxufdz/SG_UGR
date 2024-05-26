@@ -620,7 +620,9 @@ class MyScene extends THREE.Scene {
     this.add (this.luz2);
 
     this.spotLight1 = new THREE.SpotLight(0x0000ff, this.guiControls.spotLight1Power);
+
     this.spotLight1.position.set(22, 15, -100);
+    this.spotLight1.distance = 20;
     this.spotLight1.penumbra = 1;
     this.add(this.spotLight1);
     
@@ -633,8 +635,8 @@ class MyScene extends THREE.Scene {
 
     // crea la luz izquierda
     this.trainLight = new THREE.SpotLight(0x9700FF, this.guiControls.trainLight);
-
-    this.trainLight.penumbra = 0.75;
+    this.trainLight.distance = 10;
+    this.trainLight.penumbra = 0.5;
 
     // posiciona la luz izquierda en el tren
     this.trainLight.position.set(0, 125, 0);
@@ -644,6 +646,10 @@ class MyScene extends THREE.Scene {
 
 
     this.trainLight.target = this.train;
+
+    
+    var light = new THREE.SpotLightHelper(this.trainLight, 0xffffff);
+    this.add(light);
 
   }
   setLightIntensity (valor) {
