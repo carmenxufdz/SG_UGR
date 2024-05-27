@@ -39,6 +39,86 @@ class MyScene extends THREE.Scene {
     this.tercera= false;
     this.primera = false;
 
+    //inicializar los objetos
+    //objetos voladores
+
+    //libros
+    this.books = [];
+    this.numBooks = 1;
+    this.bookRotaciones = [];
+    this.bookInicioRotacion = [];
+    //inicializa todas las rotaciones por el eje z a 0
+    for (let i=0; i < this.numBooks; i++){
+      this.bookInicioRotacion.push(0);
+    }
+    //añade una velocidad aleatoria de giro sobre el eje z
+    for (let i = 0; i < this.numBooks; i++) {
+      this.bookRotaciones.push(Math.random() * 0.05);
+    }
+
+    //snitchs
+    this.snitchs = [];
+    this.numSnitchs = 1;
+
+    //objetos buenos
+
+    //monedas
+    this.coins = [];
+    this.boxCoins = [];
+    this.removedCoins = [];
+    this.numCoins = 10;
+
+    for (let i = 0; i < this.numCoins; i++) {
+      this.removedCoins.push(false);
+    }
+
+    //pociones buenas
+    this.goodPotions = [];
+    this.boxGoodPotions = [];
+    this.numGoodPotions = 1;
+
+    //setas buenas
+    this.goodMushrooms = [];
+    this.boxGoodMushrooms = [];
+    this.numGoodMushrooms = 1;
+
+    //anillos
+    this.rings = [];
+    this.boxRings = [];
+    this.numRings = 1;
+
+    //varitas
+    this.wands = [];
+    this.boxWands = [];
+    this.numWands = 1;
+
+    //objetos malos
+
+    //manzanas envenenadas
+    this.apples = [];
+    this.boxApples = [];
+    this.numApples = 1;
+
+    //pociones malas
+    this.badPotions = [];
+    this.boxBadPotions = [];
+    this.numBadPotions = 1;
+
+    //rayos
+    this.lightings = [];
+    this.boxLightings = [];
+    this.numLightings = 1;
+
+    //calaveras
+    this.skulls = [];
+    this.boxSkulls = [];
+    this.numSkulls = 1;
+
+    //setas malas
+    this.badMushrooms = [];
+    this.boxBadMushrooms = [];
+    this.numBadMushrooms = 1;
+
     // Lo primero, crear el visualizador, pasándole el lienzo sobre el que realizar los renderizados.
     this.renderer = this.createRenderer(myCanvas);
     
@@ -67,7 +147,7 @@ class MyScene extends THREE.Scene {
     this.gui = this.createGUI ();
     
     // Construimos los distinos elementos que tendremos en la escena
-    
+    this.objetosVoladores = []
 
     
     // Tendremos una cámara con un control de movimiento con el ratón
@@ -92,12 +172,6 @@ class MyScene extends THREE.Scene {
     this.createObjectsColisiones();
 
     this.createObjectsVoladores();
-    
-    this.objetosVoladores = [
-      this.book0, this.book1, this.book2, this.book3, this.book4, 
-      this.book5, this.book6, this.book7, this.book8,
-      this.snitch,
-    ]
 
     // Todo elemento que se desee sea tenido en cuenta en el renderizado de la escena debe pertenecer a esta. Bien como hijo de la escena (this en esta clase) o como hijo de un elemento que ya esté en la escena.
     // Tras crear cada elemento se añadirá a la escena con   this.add(variable)
@@ -115,268 +189,374 @@ class MyScene extends THREE.Scene {
 
   createObjectsColisiones(){
 
-    // OBJETOS BUENOS //
+    this.pts = [
+      new THREE.Vector3(60,30,0),
+      new THREE.Vector3(90,15,30),
+      new THREE.Vector3(120,0,60),
+      new THREE.Vector3(86,0,86),
+      new THREE.Vector3(120,0,120),
+      new THREE.Vector3(60,0,150),
+      new THREE.Vector3(0,0,120),
+      new THREE.Vector3(30,0,86),
+      new THREE.Vector3(0,0,60),
+      new THREE.Vector3(60,0,0),
+      new THREE.Vector3(120,0,-60),
+      new THREE.Vector3(150,0,-86),
+      new THREE.Vector3(120,0,-120),
+      new THREE.Vector3(86,0,-86),
+      new THREE.Vector3(0,0,-100),
+      new THREE.Vector3(0,0,-30),
+      new THREE.Vector3(30,15,-15),
+      new THREE.Vector3(59,30,0),
+    ];
+
+    this.path = new THREE.CatmullRomCurve3 (this.pts, true)
+
+    //OBJETOS Y SUS POSICIONES
+    var points = [];
+
+    //OBJETOS BUENOS
+
+    //MONEDAS 
+    // Calcula puntos aleatorios en la curva
     
-    this.coin0 = new Coin(this.gui, "Controles de la Figura");
-    this.coin0.position.set(30,10.25, 22.5);
-    this.add(this.coin0);
-
-    this.boxCoin0 = new THREE.Box3();
-    this.boxCoin0.setFromObject(this.coin0);
-
-    //var boxCoin0Visible = new THREE.Box3Helper(this.boxCoin0, 0xffffff);
-    //this.add(boxCoin0Visible);
-
-    this.mushroom0 = new Mushroom(this.gui, "Controles de la Figura");
-    this.mushroom0.position.set(110, 16, 50);
-    this.add(this.mushroom0);
-
-    this.boxMushrrom0 = new THREE.Box3();
-    this.boxMushrrom0.setFromObject(this.mushroom0);
-
-    //var boxMushroom0Visible = new THREE.Box3Helper(this.boxMushrrom0, 0xffffff);
-    //this.add(boxMushroom0Visible);
-
-    this.wand0 = new Wand(this.gui, "Controles de la Figura");
-    this.wand0.position.set(22, 10, -100);
-    this.add(this.wand0);
-
+    for (let i = 0; i < this.numCoins; i++) {
+        const t = Math.random();
+        points.push(this.path.getPointAt(t));
+    }
     
-    this.boxWand0 = new THREE.Box3();
-    this.boxWand0.setFromObject(this.wand0);
+    for (let i=0; i<this.numCoins; i++){
+        const coin = new Coin(this.gui, "Controles de la Figura");
+        coin.position.set(points[i].x, points[i].y + 10.25, points[i].z);
+        this.coins.push(coin);
+        this.add(coin);
+        
+        this.boxCoin = new THREE.Box3().setFromObject(coin);
+        this.boxCoins.push(this.boxCoin);
+    }
 
-    //var boxWand0Visible = new THREE.Box3Helper(this.boxWand0, 0xffffff);
-    //this.add(boxWand0Visible);
+    points.length = 0;
 
-    this.ring0 = new Ring(this.gui, "Controles de la Figura");
-    this.ring0.position.set(20, -10, 140);
-    this.ring0.rotateZ(180*Math.PI/180);
-    this.add(this.ring0);
+    //POCIONES BUENAS
+    // Calcula puntos aleatorios en la curva
+    for (let i = 0; i < this.numGoodPotions; i++) {
+        const t = Math.random();
+        points.push(this.path.getPointAt(t));
+    }
 
+    for (let i=0; i<this.numGoodPotions; i++){
+        const goodPotion = new GoodPotion(this.gui, "Controles de la Figura");
+        goodPotion.position.set(points[i].x, points[i].y + 10.25, points[i].z);
+        this.goodPotions.push(goodPotion);
+        this.add(goodPotion);
+        
+        this.boxGoodPotion = new THREE.Box3().setFromObject(goodPotion);
+        this.boxGoodPotions.push(this.boxGoodPotion);
+    }
+
+    points.length = 0;
+
+    //SETAS BUENAS
+    // Calcula puntos aleatorios en la curva
+    for (let i = 0; i < this.numGoodMushrooms; i++) {
+        const t = Math.random();
+        points.push(this.path.getPointAt(t));
+    }
+
+    for (let i=0; i<this.numGoodMushrooms; i++){
+        const goodMushrooms = new Mushroom(this.gui, "Controles de la Figura");
+        goodMushrooms.position.set(points[i].x, points[i].y + 10.25, points[i].z);
+        this.goodMushrooms.push(goodMushrooms);
+        this.add(goodMushrooms);
+        
+        this.boxGoodMushroom = new THREE.Box3().setFromObject(goodMushrooms);
+        this.boxGoodMushrooms.push(this.boxGoodMushroom);
+    }
+
+    points.length = 0;
+
+    //ANILLOS
+    // Calcula puntos aleatorios en la curva
+    for (let i = 0; i < this.numRings; i++) {
+        const t = Math.random();
+        points.push(this.path.getPointAt(t));
+    }
+
+    for (let i=0; i<this.numRings; i++){
+        const ring = new Ring(this.gui, "Controles de la Figura");
+        ring.position.set(points[i].x, points[i].y + 10.25, points[i].z);
+        this.rings.push(ring);
+        this.add(ring);
+        
+        this.boxRing = new THREE.Box3().setFromObject(ring);
+        this.boxRings.push(this.boxRing);
+    }
+
+    points.length = 0;
+
+    //VARITAS
+    // Calcula puntos aleatorios en la curva
+    for (let i = 0; i < this.numWands; i++) {
+        const t = Math.random();
+        points.push(this.path.getPointAt(t));
+    }
+
+    for (let i=0; i<this.numWands; i++){
+        const wand = new Wand(this.gui, "Controles de la Figura");
+        wand.position.set(points[i].x, points[i].y + 10.25, points[i].z);
+        this.wands.push(wand);
+        this.add(wand);
+        
+        this.boxWand = new THREE.Box3().setFromObject(wand);
+        this.boxWands.push(this.boxWand);
+    }
+
+    points.length = 0;
+
+    //OBJETOS MALOS
     
-    this.boxRing0 = new THREE.Box3();
-    this.boxRing0.setFromObject(this.ring0);
+    //MANZANAS ENVENENADAS
+    // Calcula puntos aleatorios en la curva
+    for (let i = 0; i < this.numApples; i++) {
+      const t = Math.random();
+      points.push(this.path.getPointAt(t));
+    }
 
-    //var boxRing0Visible = new THREE.Box3Helper(this.boxRing0, 0xffffff);
-    //this.add(boxRing0Visible);
+    for (let i=0; i<this.numApples; i++){
+        const apple = new Apple(this.gui, "Controles de la Figura");
+        apple.position.set(points[i].x, points[i].y + 10.25, points[i].z);
+        this.apples.push(apple);
+        this.add(apple);
+        
+        this.boxApple = new THREE.Box3().setFromObject(apple);
+        this.boxApples.push(this.boxApple);
+    }
 
-    this.goodpotion0 = new GoodPotion(this.gui, "Controles de la Figura");
-    this.goodpotion0.position.set(20, -10.5, 80);
-    this.goodpotion0.rotateZ(180*Math.PI/180);
-    this.add(this.goodpotion0);
+    points.length = 0;
 
-    
-    this.boxGoodpotion0 = new THREE.Box3();
-    this.boxGoodpotion0.setFromObject(this.goodpotion0);
-    
-    //var boxGoodpotion0Visible = new THREE.Box3Helper(this.boxGoodpotion0, 0xffffff);
-    //this.add(boxGoodpotion0Visible);
+    //SETAS MALAS
+    // Calcula puntos aleatorios en la curva
+    for (let i = 0; i < this.numBadMushrooms; i++) {
+      const t = Math.random();
+      points.push(this.path.getPointAt(t));
+    }
 
-    // OBJETOS MALOS //
+    for (let i=0; i<this.numBadMushrooms; i++){
+        const badMushroom = new BadMushroom(this.gui, "Controles de la Figura");
+        badMushroom.position.set(points[i].x, points[i].y + 10.25, points[i].z);
+        this.badMushrooms.push(badMushroom);
+        this.add(badMushroom);
+        
+        this.boxBadMushroom = new THREE.Box3().setFromObject(badMushroom);
+        this.boxBadMushrooms.push(this.boxBadMushroom);
+    }
 
-    this.rayo0 = new Rayo(this.gui, "Controles de la Figura");
-    this.rayo0.position.set(127,-10.25, -120);
-    this.rayo0.rotateZ(180*Math.PI/180);
-    this.add(this.rayo0);
+    points.length = 0;
 
-    
-    this.boxRayo0 = new THREE.Box3();
-    this.boxRayo0.setFromObject(this.rayo0);
-    
-    //var boxRayo0Visible = new THREE.Box3Helper(this.boxRayo0, 0xffffff);
-    //this.add(boxRayo0Visible);
-    
-    this.badmushroom0 = new BadMushroom(this.gui, "Controles de la Figura");
-    this.badmushroom0.position.set(85,10, -20);
-    this.add(this.badmushroom0);
+    //POCIONES MALAS 
+    // Calcula puntos aleatorios en la curva
+    for (let i = 0; i < this.numBadPotions; i++) {
+      const t = Math.random();
+      points.push(this.path.getPointAt(t));
+    }
 
+    for (let i=0; i<this.numBadPotions; i++){
+        const badPotion = new BadPotion(this.gui, "Controles de la Figura");
+        badPotion.position.set(points[i].x, points[i].y + 10.25, points[i].z);
+        this.badPotions.push(badPotion);
+        this.add(badPotion);
+        
+        this.boxBadPotion = new THREE.Box3().setFromObject(badPotion);
+        this.boxBadPotions.push(this.boxBadPotion);
+    }
 
-    this.boxBadmushroom0 = new THREE.Box3();
-    this.boxBadmushroom0.setFromObject(this.badmushroom0);
-    
-    //var boxBadmushroom0Visible = new THREE.Box3Helper(this.boxBadmushroom0, 0xffffff);
-    //this.add(boxBadmushroom0Visible);
+    points.length = 0;
 
-    this.skull0 = new Skull(this.gui, "Controles de la Figura");
-    this.skull0.position.set(-5,9.5, -40);
-    this.add(this.skull0);
+    //RAYOS 
+    // Calcula puntos aleatorios en la curva
+    for (let i = 0; i < this.numLightings; i++) {
+      const t = Math.random();
+      points.push(this.path.getPointAt(t));
+    }
 
+    for (let i=0; i<this.numLightings; i++){
+        const lighting = new Rayo(this.gui, "Controles de la Figura");
+        lighting.position.set(points[i].x, points[i].y + 10.25, points[i].z);
+        this.lightings.push(lighting);
+        this.add(lighting);
+        
+        this.boxLighting = new THREE.Box3().setFromObject(lighting);
+        this.boxLightings.push(this.boxLighting);
+    }
 
-    this.boxSkull0 = new THREE.Box3();
-    this.boxSkull0.setFromObject(this.skull0);
-    
-    //var boxSkull0Visible = new THREE.Box3Helper(this.boxSkull0, 0xffffff);
-    //this.add(boxSkull0Visible);
+    points.length = 0;
 
-    this.apple0 = new Apple(this.gui, "Controles de la Figura");
-    this.apple0.position.set(90,10, 140);
-    this.add(this.apple0);
+    //CALAVERAS 
+    // Calcula puntos aleatorios en la curva
+    for (let i = 0; i < this.numSkulls; i++) {
+      const t = Math.random();
+      points.push(this.path.getPointAt(t));
+    }
 
+    for (let i=0; i<this.numSkulls; i++){
+        const skull = new Skull(this.gui, "Controles de la Figura");
+        skull.position.set(points[i].x, points[i].y + 10.25, points[i].z);
+        this.skulls.push(skull);
+        this.add(skull);
+        
+        this.boxSkull = new THREE.Box3().setFromObject(skull);
+        this.boxSkulls.push(this.boxSkull);
+    }
 
-    this.boaxApple0 = new THREE.Box3();
-    this.boaxApple0.setFromObject(this.apple0);
-    
-    //var boaxApple0Visible = new THREE.Box3Helper(this.boaxApple0, 0xffffff);
-    //this.add(boaxApple0Visible);
-
-    this.badpotion0 = new BadPotion(this.gui, "Controles de la Figura");
-    this.badpotion0.position.set(55,-10.5, -90);
-    this.badpotion0.rotateZ(180*Math.PI/180);
-    this.add(this.badpotion0);
-
-
-    this.boxBadpotion0 = new THREE.Box3();
-    this.boxBadpotion0.setFromObject(this.badpotion0);
-    
-    //var boxBadpotion0Visible = new THREE.Box3Helper(this.boxBadpotion0, 0xffffff);
-    //this.add(boxBadpotion0Visible);
   }
 
   createObjectsVoladores(){
+    // Coloca los libros de manera aleatoria alrededor del circuito
+    for (let i = 0; i < this.numBooks; i++) {
+      const book = new Book(this.gui, "Controles de la Figura");
+      this.objetosVoladores.push(book);
+      this.books.push(book);
+      this.add(book);
+    }
 
-    this.book0 = new Book(this.gui, "Controles de la Figura")
-    this.book0.position.set(12, 12, 15);
-    this.add(this.book0);
-
-    this.book1 = new Book(this.gui, "Controles de la Figura") //primer libro
-    this.book1.position.set(50, 15,140);
-    this.add(this.book1);
-
-    this.book2 = new Book(this.gui, "Controles de la Figura")
-    this.book2.position.set(-10, -20, -35);
-    this.book2.rotateZ(180*Math.PI/180);
-    this.add(this.book2);
-
-    this.book3 = new Book(this.gui, "Controles de la Figura")
-    this.book3.position.set(100, 25, 30);
-    this.add(this.book3);
-
-    this.book4 = new Book(this.gui, "Controles de la Figura")
-    this.book4.position.set(140, -15, -60);
-    this.book4.rotateZ(180*Math.PI/180);
-    this.add(this.book4);
-
-    this.book5 = new Book(this.gui, "Controles de la Figura")
-    this.book5.position.set(45, 13, -110);
-    this.add(this.book5);
-
-    this.book6 = new Book(this.gui, "Controles de la Figura")
-    this.book6.position.set(70, -15, 80);
-    this.book6.rotateZ(180*Math.PI/180);
-    this.add(this.book6);
-
-    this.book7 = new Book(this.gui, "Controles de la Figura")
-    this.book7.position.set(140, 15, -120);
-    this.add(this.book7);
-
-    this.book8 = new Book(this.gui, "Controles de la Figura")
-    this.book8.position.set(20, -17, 150);
-    this.book8.rotateZ(180*Math.PI/180);
-    this.add(this.book8);
-
-    this.snitch = new Snitch(this.gui, "Controles de la Figura");
-    this.add(this.snitch);
-
+    for (let i = 0; i < this.numSnitchs; i++){
+      const snitch = new Snitch(this.gui, "Controles de la Figura");
+      this.objetosVoladores.push(snitch);
+      this.snitchs.push(snitch);
+      this.add(snitch);
+    }
   }
 
   colisiones(){
-    if(this.boxTrain.intersectsBox(this.boxCoin0) && !this.coin0.removed){
-      this.coin0.removed = true;
-      this.remove(this.boxCoin0);
-      this.remove(this.coin0);
+    
+    //comprobar si colisiona con alguna moneda
+    for (let i = 0; i < this.boxCoins.length; i++) {
+      if (this.boxTrain.intersectsBox(this.boxCoins[i]) && !this.removedCoins[i]) {
+        this.removedCoins[i] = true;
+        this.remove(this.coins[i]);
+        this.remove(this.boxCoins[i]);
 
-      this.time = Date.now();
-      this.timeContador = Date.now() - this.time;
-      this.aumentoV = true;
-      this.train.velocidad += this.velocidad;
+        this.time = Date.now();
+        this.timeContador = Date.now() - this.time;
+        this.aumentoV = true;
+        this.train.velocidad += this.velocidad;
+      }
     }
 
-    if(this.boxTrain.intersectsBox(this.boxMushrrom0) && !this.mushroom0.removed){
-      this.mushroom0.removed = true;
-      this.remove(this.boxMushrrom0);
-      this.remove(this.mushroom0);
-      this.train.velocidad += this.velocidad;
+    //comprobar si colisiona con alguna pocion buena
+    for (let i = 0; i < this.boxGoodPotions.length; i++) {
+      if (this.boxTrain.intersectsBox(this.boxGoodPotions[i]) && !this.goodPotions[i].removed) {
+        this.goodPotions[i].removed = true;
+        this.remove(this.goodPotions[i]);
+        this.remove(this.boxGoodPotions[i]);
+
+        this.time = Date.now();
+        this.timeContador = Date.now() - this.time;
+        this.doblarPuntos = true;
+
+      }
     }
 
-    if(this.boxTrain.intersectsBox(this.boxWand0) && !this.wand0.removed){
-      this.wand0.removed = true;
-      this.invencible = true;
-      this.time = Date.now();
-      this.timeContador = Date.now() - this.time;
+    //comprobar si colisiona con alguna seta buena
+    for (let i = 0; i < this.boxGoodMushrooms.length; i++) {
+      if (this.boxTrain.intersectsBox(this.boxGoodMushrooms[i]) && !this.goodMushrooms[i].removed) {
+        this.goodMushrooms[i].removed = true;
+        this.remove(this.goodMushrooms[i]);
+        this.remove(this.boxGoodMushrooms[i]);
 
-      this.remove(this.boxWand0);
-      this.remove(this.wand0);
+        this.train.velocidad += this.velocidad;
+      }
     }
 
-    if(this.boxTrain.intersectsBox(this.boxRing0) && !this.ring0.removed){
-      this.ring0.removed = true;
-      this.remove(this.boxRing0);
-      this.remove(this.ring0);
-      this.puntos*=2;
+    //comprobar si colisiona con algun anillo
+    for (let i = 0; i < this.boxRings.length; i++) {
+      if (this.boxTrain.intersectsBox(this.boxRings[i]) && !this.rings[i].removed) {
+        this.rings[i].removed = true;
+        this.remove(this.rings[i]);
+        this.remove(this.boxRings[i]);
+        
+        this.puntos*=2;
+      }
     }
 
-    if(this.boxTrain.intersectsBox(this.boxGoodpotion0) && !this.goodpotion0.removed){
-      this.goodpotion0.removed = true;
-      this.remove(this.boxGoodpotion0);
-      this.remove(this.goodpotion0);
+    //comprobar si colisiona con alguna varita
+    for (let i = 0; i < this.boxWands.length; i++) {
+      if (this.boxTrain.intersectsBox(this.boxWands[i]) && !this.wands[i].removed) {
+        this.wands[i].removed = true;
+        this.remove(this.wands[i]);
+        this.remove(this.boxWands[i]);
 
-      this.time = Date.now();
-      this.timeContador = Date.now() - this.time;
-      this.doblarPuntos = true;
+        this.invencible = true;
+        this.time = Date.now();
+        this.timeContador = Date.now() - this.time;
+      }
     }
-
-    // OBJETOS MALOS
 
     if(!this.invencible){
+      //comprobar si colisiona con alguna manzana envenenada
+      for (let i = 0; i < this.boxApples.length; i++) {
+        if (this.boxTrain.intersectsBox(this.boxApples[i]) && !this.apples[i].removed) {
+          this.apples[i].removed = true;
+          this.remove(this.apples[i]);
+          this.remove(this.boxApples[i]);
 
-      if(this.boxTrain.intersectsBox(this.boxRayo0) && !this.rayo0.removed){
-        this.rayo0.removed = true;
-        this.remove(this.boxRayo0);
-        this.remove(this.rayo0);
-          
-        this.time = Date.now();
-        this.timeContador = Date.now() - this.time;
-        this.reduccionV = true;
-        this.train.velocidad -= this.velocidad;
+          this.puntos/=2;
+        }
       }
-  
-      if(this.boxTrain.intersectsBox(this.boxBadmushroom0) && !this.badmushroom0.removed){
-        this.badmushroom0.removed = true;
-        this.remove(this.boxBadmushroom0);
-        this.remove(this.badmushroom0);
-        this.train.velocidad -= this.velocidad;
-      }
-  
-      if(this.boxTrain.intersectsBox(this.boxSkull0) && !this.skull0.removed){
-        this.skull0.removed = true;
-        this.remove(this.boxSkull0);
-        this.remove(this.skull0);
 
-        this.setAmbientIntensity(0);
-        this.setLightIntensity(0);
+      //comprobar si colisiona con alguna seta mala
+      for (let i = 0; i < this.boxBadMushrooms.length; i++) {
+        if (this.boxTrain.intersectsBox(this.boxBadMushrooms[i]) && !this.badMushrooms[i].removed) {
+          this.badMushrooms[i].removed = true;
+          this.remove(this.badMushrooms[i]);
+          this.remove(this.boxBadMushrooms[i]);
 
-          
-        this.time = Date.now();
-        this.timeContador = Date.now() - this.time;
-        this.oscuro = true;
+          this.train.velocidad -= this.velocidad;
+        }
       }
-  
-      if(this.boxTrain.intersectsBox(this.boaxApple0) && !this.apple0.removed){
-        this.apple0.removed = true;
-        this.remove(this.boaxApple0);
-        this.remove(this.apple0);
-        this.puntos/=2;
-      }
-  
-      if(this.boxTrain.intersectsBox(this.boxBadpotion0) && !this.badpotion0.removed){
-        this.badpotion0.removed = true;
-        this.remove(this.boxBadpotion0);
-        this.remove(this.badpotion0);
 
-          
-        this.time = Date.now();
-        this.timeContador = Date.now() - this.time;
-        this.mitadPuntos = true;
+      //comprobar si colisiona con alguna pocion mala
+      for (let i = 0; i < this.boxBadPotions.length; i++) {
+        if (this.boxTrain.intersectsBox(this.boxBadPotions[i]) && !this.badPotions[i].removed) {
+          this.badPotions[i].removed = true;
+          this.remove(this.badPotions[i]);
+          this.remove(this.boxBadPotions[i]);
+
+          this.time = Date.now();
+          this.timeContador = Date.now() - this.time;
+          this.mitadPuntos = true;
+        }
+      }
+
+      //comprobar si colisiona con algun rayo
+      for (let i = 0; i < this.boxLightings.length; i++) {
+        if (this.boxTrain.intersectsBox(this.boxLightings[i]) && !this.lightings[i].removed) {
+          this.lightings[i].removed = true;
+          this.remove(this.lightings[i]);
+          this.remove(this.boxLightings[i]);
+
+          this.time = Date.now();
+          this.timeContador = Date.now() - this.time;
+          this.reduccionV = true;
+          this.train.velocidad -= this.velocidad;
+        }
+      }
+
+      //comprobar si colisiona con alguna calavera
+      for (let i = 0; i < this.boxSkulls.length; i++) {
+        if (this.boxTrain.intersectsBox(this.boxSkulls[i]) && !this.skulls[i].removed) {
+          this.skulls[i].removed = true;
+          this.remove(this.skulls[i]);
+          this.remove(this.boxSkulls[i]);
+
+          this.setAmbientIntensity(0);
+          this.setLightIntensity(0);
+
+            
+          this.time = Date.now();
+          this.timeContador = Date.now() - this.time;
+          this.oscuro = true;
+        }
       }
     }
   }
@@ -626,7 +806,8 @@ class MyScene extends THREE.Scene {
     this.spotLight1.penumbra = 1;
     this.add(this.spotLight1);
     
-    this.spotLight1.target = this.wand0;
+    for (let i=0; i<this.numWands; i++)
+      this.spotLight1.target = this.wands[i];
 
     this.createTrainLights();
   }
@@ -766,6 +947,12 @@ class MyScene extends THREE.Scene {
 
     this.train.rotateZ(this.trenrotacion);
     
+    //GIRA LOS LIBROS ALREDEDOR DEL CIRCUITO
+    for(let i = 0; i<this.books.length; i++){
+      this.bookInicioRotacion[i] += this.bookRotaciones[i];
+      this.books[i].rotateZ(this.bookInicioRotacion[i]);
+    }
+
     this.izquierda = false;
     this.derecha = false;
 
