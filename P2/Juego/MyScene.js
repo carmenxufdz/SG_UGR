@@ -44,7 +44,7 @@ class MyScene extends THREE.Scene {
 
     //libros
     this.books = [];
-    this.numBooks = 1;
+    this.numBooks = 0;
     this.bookRotaciones = [];
     this.bookInicioRotacion = [];
     //inicializa todas las rotaciones por el eje z a 0
@@ -58,7 +58,7 @@ class MyScene extends THREE.Scene {
 
     //snitchs
     this.snitchs = [];
-    this.numSnitchs = 1;
+    this.numSnitchs = 0;
 
     //objetos buenos
 
@@ -66,7 +66,7 @@ class MyScene extends THREE.Scene {
     this.coins = [];
     this.boxCoins = [];
     this.removedCoins = [];
-    this.numCoins = 10;
+    this.numCoins = 0;
 
     for (let i = 0; i < this.numCoins; i++) {
       this.removedCoins.push(false);
@@ -75,49 +75,49 @@ class MyScene extends THREE.Scene {
     //pociones buenas
     this.goodPotions = [];
     this.boxGoodPotions = [];
-    this.numGoodPotions = 1;
+    this.numGoodPotions = 0;
 
     //setas buenas
     this.goodMushrooms = [];
     this.boxGoodMushrooms = [];
-    this.numGoodMushrooms = 1;
+    this.numGoodMushrooms = 0;
 
     //anillos
     this.rings = [];
     this.boxRings = [];
-    this.numRings = 1;
+    this.numRings = 0;
 
     //varitas
     this.wands = [];
     this.boxWands = [];
-    this.numWands = 1;
+    this.numWands = 0;
 
     //objetos malos
 
     //manzanas envenenadas
     this.apples = [];
     this.boxApples = [];
-    this.numApples = 1;
+    this.numApples = 0;
 
     //pociones malas
     this.badPotions = [];
     this.boxBadPotions = [];
-    this.numBadPotions = 1;
+    this.numBadPotions = 0;
 
     //rayos
     this.lightings = [];
     this.boxLightings = [];
-    this.numLightings = 1;
+    this.numLightings = 0;
 
     //calaveras
     this.skulls = [];
     this.boxSkulls = [];
-    this.numSkulls = 1;
+    this.numSkulls = 3;
 
     //setas malas
     this.badMushrooms = [];
     this.boxBadMushrooms = [];
-    this.numBadMushrooms = 1;
+    this.numBadMushrooms = 0;
 
     // Lo primero, crear el visualizador, pasándole el lienzo sobre el que realizar los renderizados.
     this.renderer = this.createRenderer(myCanvas);
@@ -176,6 +176,7 @@ class MyScene extends THREE.Scene {
     // Todo elemento que se desee sea tenido en cuenta en el renderizado de la escena debe pertenecer a esta. Bien como hijo de la escena (this en esta clase) o como hijo de un elemento que ya esté en la escena.
     // Tras crear cada elemento se añadirá a la escena con   this.add(variable)
     this.createLights ();
+    this.createTrainFoco();
     
 
   }
@@ -830,6 +831,43 @@ class MyScene extends THREE.Scene {
 
 
   }
+
+  createTrainFoco() {
+    // Crear la luz spot de color amarillo con mayor intensidad
+    var leftHeadlight = new THREE.SpotLight(0xffff00, 10);
+    leftHeadlight.position.set(0, 110.1, 0);
+
+    // Configurar el ángulo de apertura de la luz
+    leftHeadlight.angle = Math.PI / 6;  // Ajusta el ángulo según sea necesario
+    leftHeadlight.penumbra = 0.1;       // Suaviza los bordes de la luz
+    leftHeadlight.decay = 2;            // Decay (atenuación) de la luz
+    leftHeadlight.distance = 4000;       // Distancia máxima de la luz
+
+    // Crear un objeto para el objetivo de la luz
+    this.targetObject = new THREE.Object3D();
+    this.targetPosition = new THREE.Vector3(0, 0.5, 0);
+    this.targetObject.position.copy(this.targetPosition);
+
+    // Agregar la luz y el objetivo al tren
+    this.train.add(leftHeadlight);
+    this.train.add(this.targetObject);
+
+    // Configurar la luz para que apunte al objetivo
+    leftHeadlight.target = this.targetObject;
+
+    // Para asegurarte de que la luz se actualice correctamente
+    this.add(leftHeadlight.target); 
+  }
+
+  updateTrainLights() {
+    // Obtener la dirección hacia adelante del tren
+    var forwardVector = new THREE.Vector3(0, 0, 1);
+    forwardVector.applyQuaternion(this.train.quaternion);
+    
+    // Actualizar la posición del objetivo
+    this.targetObject.position.copy(this.train.position).add(forwardVector.multiplyScalar(100)); // Ajusta el escalar según sea necesario
+  }
+
   setLightIntensity (valor) {
     this.luz1.intensity = valor;
     this.luz2.intensity = valor;
@@ -930,6 +968,8 @@ class MyScene extends THREE.Scene {
     // Se actualiza la posición de la cámara según su controlador
     if (this.general == true)
       this.camerageneralControl.update();
+
+    this.updateTrainLights();
 
     this.circuito.update();
 
