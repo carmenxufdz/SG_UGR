@@ -44,7 +44,7 @@ class MyScene extends THREE.Scene {
 
     //libros
     this.books = [];
-    this.numBooks = 0;
+    this.numBooks = 5;
     this.bookRotaciones = [];
     this.bookInicioRotacion = [];
     //inicializa todas las rotaciones por el eje z a 0
@@ -53,12 +53,12 @@ class MyScene extends THREE.Scene {
     }
     //añade una velocidad aleatoria de giro sobre el eje z
     for (let i = 0; i < this.numBooks; i++) {
-      this.bookRotaciones.push(Math.random() * 0.05);
+      this.bookRotaciones.push(Math.random() * 0.01);
     }
 
     //snitchs
     this.snitchs = [];
-    this.numSnitchs = 0;
+    this.numSnitchs = 1;
 
     //objetos buenos
 
@@ -66,7 +66,7 @@ class MyScene extends THREE.Scene {
     this.coins = [];
     this.boxCoins = [];
     this.removedCoins = [];
-    this.numCoins = 0;
+    this.numCoins = 5;
 
     for (let i = 0; i < this.numCoins; i++) {
       this.removedCoins.push(false);
@@ -75,49 +75,49 @@ class MyScene extends THREE.Scene {
     //pociones buenas
     this.goodPotions = [];
     this.boxGoodPotions = [];
-    this.numGoodPotions = 0;
+    this.numGoodPotions = 1;
 
     //setas buenas
     this.goodMushrooms = [];
     this.boxGoodMushrooms = [];
-    this.numGoodMushrooms = 0;
+    this.numGoodMushrooms = 1;
 
     //anillos
     this.rings = [];
     this.boxRings = [];
-    this.numRings = 0;
+    this.numRings = 1;
 
     //varitas
     this.wands = [];
     this.boxWands = [];
-    this.numWands = 0;
+    this.numWands = 1;
 
     //objetos malos
 
     //manzanas envenenadas
     this.apples = [];
     this.boxApples = [];
-    this.numApples = 0;
+    this.numApples = 1;
 
     //pociones malas
     this.badPotions = [];
     this.boxBadPotions = [];
-    this.numBadPotions = 0;
+    this.numBadPotions = 1;
 
     //rayos
     this.lightings = [];
     this.boxLightings = [];
-    this.numLightings = 0;
+    this.numLightings = 2;
 
     //calaveras
     this.skulls = [];
     this.boxSkulls = [];
-    this.numSkulls = 3;
+    this.numSkulls = 2;
 
     //setas malas
     this.badMushrooms = [];
     this.boxBadMushrooms = [];
-    this.numBadMushrooms = 0;
+    this.numBadMushrooms = 1;
 
     // Lo primero, crear el visualizador, pasándole el lienzo sobre el que realizar los renderizados.
     this.renderer = this.createRenderer(myCanvas);
@@ -138,7 +138,7 @@ class MyScene extends THREE.Scene {
     this.mitadPuntos = false;
     this.oscuro = false;
 
-    this.velocidad = 0.005;
+    this.velocidad = 0.001;
     
     this.time;
     this.timeContador;
@@ -190,26 +190,7 @@ class MyScene extends THREE.Scene {
 
   createObjectsColisiones(){
 
-    this.pts = [
-      new THREE.Vector3(60,30,0),
-      new THREE.Vector3(90,15,30),
-      new THREE.Vector3(120,0,60),
-      new THREE.Vector3(86,0,86),
-      new THREE.Vector3(120,0,120),
-      new THREE.Vector3(60,0,150),
-      new THREE.Vector3(0,0,120),
-      new THREE.Vector3(30,0,86),
-      new THREE.Vector3(0,0,60),
-      new THREE.Vector3(60,0,0),
-      new THREE.Vector3(120,0,-60),
-      new THREE.Vector3(150,0,-86),
-      new THREE.Vector3(120,0,-120),
-      new THREE.Vector3(86,0,-86),
-      new THREE.Vector3(0,0,-100),
-      new THREE.Vector3(0,0,-30),
-      new THREE.Vector3(30,15,-15),
-      new THREE.Vector3(59,30,0),
-    ];
+    this.pts = this.circuito.getRuta();
 
     this.path = new THREE.CatmullRomCurve3 (this.pts, true)
 
@@ -436,10 +417,6 @@ class MyScene extends THREE.Scene {
         this.removedCoins[i] = true;
         this.remove(this.coins[i]);
         this.remove(this.boxCoins[i]);
-
-        this.time = Date.now();
-        this.timeContador = Date.now() - this.time;
-        this.aumentoV = true;
         this.train.velocidad += this.velocidad;
       }
     }
@@ -465,6 +442,9 @@ class MyScene extends THREE.Scene {
         this.remove(this.goodMushrooms[i]);
         this.remove(this.boxGoodMushrooms[i]);
 
+        this.time = Date.now();
+        this.timeContador = Date.now() - this.time;
+        this.aumentoV = true;
         this.train.velocidad += this.velocidad;
       }
     }
@@ -511,6 +491,10 @@ class MyScene extends THREE.Scene {
           this.badMushrooms[i].removed = true;
           this.remove(this.badMushrooms[i]);
           this.remove(this.boxBadMushrooms[i]);
+          
+          this.time = Date.now();
+          this.timeContador = Date.now() - this.time;
+          this.reduccionV = true;
 
           this.train.velocidad -= this.velocidad;
         }
@@ -536,9 +520,6 @@ class MyScene extends THREE.Scene {
           this.remove(this.lightings[i]);
           this.remove(this.boxLightings[i]);
 
-          this.time = Date.now();
-          this.timeContador = Date.now() - this.time;
-          this.reduccionV = true;
           this.train.velocidad -= this.velocidad;
         }
       }
@@ -989,8 +970,7 @@ class MyScene extends THREE.Scene {
     
     //GIRA LOS LIBROS ALREDEDOR DEL CIRCUITO
     for(let i = 0; i<this.books.length; i++){
-      this.bookInicioRotacion[i] += this.bookRotaciones[i];
-      this.books[i].rotateZ(this.bookInicioRotacion[i]);
+      this.books[i].rotateZ(this.bookRotaciones[i]);
     }
 
     this.izquierda = false;
