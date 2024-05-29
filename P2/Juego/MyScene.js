@@ -128,7 +128,7 @@ class MyScene extends THREE.Scene {
     this.trenrotacion = 0;
 
     this.puntosLibros = 50;
-    this.puntosSnitch = 500;
+    this.puntosSnitch = 1000;
     this.puntos = 0.0
 
     this.invencible = false;
@@ -781,36 +781,6 @@ class MyScene extends THREE.Scene {
     this.luz2.position.set( 0, -200, 50 );
     this.add (this.luz2);
 
-    this.spotLight1 = new THREE.SpotLight(0x0000ff, this.guiControls.spotLight1Power);
-
-    this.spotLight1.position.set(22, 15, -100);
-    this.spotLight1.distance = 20;
-    this.spotLight1.penumbra = 1;
-    this.add(this.spotLight1);
-    
-    for (let i=0; i<this.numWands; i++)
-      this.spotLight1.target = this.wands[i];
-
-    this.createTrainLights();
-  }
-  
-  createTrainLights(){
-
-    // crea la luz izquierda
-    this.trainLight = new THREE.SpotLight(0x9700FF, this.guiControls.trainLight);
-    this.trainLight.distance = 10;
-    this.trainLight.penumbra = 0.5;
-
-    // posiciona la luz izquierda en el tren
-    this.trainLight.position.set(0, 125, 0);
-    
-    // agrega la luz izquierda al objeto del tren
-    this.train.add(this.trainLight);
-
-
-    this.trainLight.target = this.train;
-
-
   }
 
   createTrainFoco() {
@@ -980,7 +950,7 @@ class MyScene extends THREE.Scene {
 
     this.colisiones();
 
-    if(this.invencible && this.timeContador < 15000){
+    if(this.invencible && this.timeContador < 20000){
       this.timeContador = Date.now() - this.time;
     }
     else{
@@ -1020,11 +990,11 @@ class MyScene extends THREE.Scene {
     }
 
     
-    if(this.oscuro && this.timeContador < 15000){
+    if(this.oscuro && this.timeContador < 20000){
       this.timeContador = Date.now() - this.time;
     }
-    else if(this.oscuro && this.timeContador > 15000){
-      this.reduccionV = false;
+    else if(this.oscuro && this.timeContador > 20000){
+      this.oscuro = false;
       this.setAmbientIntensity(1);
       this.setLightIntensity(15);
     }

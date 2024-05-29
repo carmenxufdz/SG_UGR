@@ -202,7 +202,6 @@ class Train extends THREE.Object3D {
     }
 
     update() {
-      //TWEEN.update();
       var tiempoTranscurrido = this.reloj.getDelta();
       this.t += this.velocidad * tiempoTranscurrido;
       if(this.t>1){
