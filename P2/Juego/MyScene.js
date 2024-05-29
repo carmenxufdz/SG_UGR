@@ -56,10 +56,6 @@ class MyScene extends THREE.Scene {
       this.bookRotaciones.push(Math.random() * 0.01);
     }
 
-    //snitchs
-    this.snitchs = [];
-    this.numSnitchs = 1;
-
     //objetos buenos
 
     //monedas
@@ -393,6 +389,11 @@ class MyScene extends THREE.Scene {
   }
 
   createObjectsVoladores(){
+
+    const snitch = new Snitch(this.gui, "Controles de la Figura");
+    this.objetosVoladores.push(snitch);
+    this.add(snitch);
+
     // Coloca los libros de manera aleatoria alrededor del circuito
     for (let i = 0; i < this.numBooks; i++) {
       const book = new Book(this.gui, "Controles de la Figura");
@@ -401,12 +402,7 @@ class MyScene extends THREE.Scene {
       this.add(book);
     }
 
-    for (let i = 0; i < this.numSnitchs; i++){
-      const snitch = new Snitch(this.gui, "Controles de la Figura");
-      this.objetosVoladores.push(snitch);
-      this.snitchs.push(snitch);
-      this.add(snitch);
-    }
+
   }
 
   colisiones(){
@@ -612,18 +608,33 @@ class MyScene extends THREE.Scene {
         console.log('Comparando:', this.objetosVoladores[i], 'con', selectedObject);
         if (this.objetosVoladores[i].uuid === selectedObject.parent.uuid) {
             console.log('El objeto seleccionado es:', this.objetosVoladores[i]);
+            if(this.objetosVoladores[i] == this.objetosVoladores[0]){
+              // PUNTOS SNITCH
+              if(this.mitadPuntos){
+                this.puntos += this.puntosSnitch/2;
+              }
+              else if(this.doblarPuntos){
+                this.puntos += this.puntosSnitch*2;
+              }
+              else
+                this.puntos += this.puntosSnitch;
+            }
+            else{
+
+              // PUNTOS LIBROS
+              if(this.mitadPuntos){
+                this.puntos += this.puntosLibros/2;
+              }
+              else if(this.doblarPuntos){
+                this.puntos += this.puntosLibros*2;
+              }
+              else
+                this.puntos += this.puntosLibros;
+            }
+            
             // Eliminar el objeto seleccionado de la escena
             this.remove(this.objetosVoladores[i]);
 
-            // PUNTOS LIBROS
-            if(this.mitadPuntos){
-              this.puntos += this.puntosLibros/2;
-            }
-            else if(this.doblarPuntos){
-              this.puntos += this.puntosLibros*2;
-            }
-            else
-              this.puntos += this.puntosLibros;
             // Eliminar el objeto de pickableObjects
             this.objetosVoladores.splice(i, 1);
             break;
